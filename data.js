@@ -271,7 +271,7 @@ const categories = [
 
   {
     id: "2024 Padushka",
-    name: "2024 Padushka",
+    name: "2024_padushka",
     poster: "images/padushka.jpg",
     items: [
 	  {
@@ -341,7 +341,7 @@ const categories = [
   },
 
   {
-    id: "Shatlanka",
+    id: "shatlanka",
     name: "Shatlanka",
     poster: "images/shatlanka.jpg",
     items: [
