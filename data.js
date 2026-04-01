@@ -137,7 +137,7 @@ const categories = [
   },
 
   {
-    id: "2020 Fantan HB",
+    id: "2020_fantan_hb",
     name: "2020 Fantan HB",
     poster: "images/fantan.jpg",
     items: [
@@ -275,25 +275,25 @@ const categories = [
     poster: "images/padushka.jpg",
     items: [
       {
-        id: "cola",
-        name: "Coca Cola",
+        id: "pad1",
+        name: "padushka 1",
         price: "10 000 so'm",
         desc: "Sovuq gazli ichimlik",
-        poster: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400"
+        poster: BASE_IMAGE + "padushka/1.jpg"
       },
       {
-        id: "fanta",
-        name: "Fanta",
+        id: "pad2",
+        name: "Padushka 2",
         price: "10 000 so'm",
         desc: "Apelsinli ichimlik",
-        poster: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400"
+        poster: BASE_IMAGE + "padushka/2.jpg"
       },
       {
-        id: "coffee",
-        name: "Coffee",
+        id: "pad3",
+        name: "Padushka 3",
         price: "18 000 so'm",
         desc: "Issiq qora kofe",
-        poster: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400"
+        poster: BASE_IMAGE + "padushka/2.jpg"
       }
     ]
   },
