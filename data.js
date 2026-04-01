@@ -301,7 +301,7 @@ const categories = [
         price: "370 000 so'm",
         desc: "vaqtincha bo'sh",
         poster: BASE_IMAGE + "padushka/4.jpg"
-	  }		
+	  }, 	
       {
         id: "pad5",
         name: "padushka 5",
