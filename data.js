@@ -346,81 +346,95 @@ const categories = [
     poster: "images/shatlanka.jpg",
     items: [
       {
-        id: "cake",
-        name: "Tort",
-        price: "45 000 so'm",
-        desc: "Shokoladli tort",
-        poster: "https://images.unsplash.com/photo-1578985545062-69928b1d9587?w=400"
+        id: "shatlanka1",
+        name: "Shatlanka",
+        price: "550 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "shatlanka/1.jpg"
       },
       {
-        id: "donut",
-        name: "Donut",
-        price: "12 000 so'm",
-        desc: "Shirin donut",
-        poster: "https://images.unsplash.com/photo-1551024601-bec78aea704b?w=400"
-      },
-      {
-        id: "icecream",
-        name: "Muzqaymoq",
-        price: "15 000 so'm",
-        desc: "Sovuq vanilli muzqaymoq",
-        poster: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=400"
+        id: "shatlanka2",
+        name: "Shatlanka",
+        price: "550 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "shatlanka/2.jpg"
       }
     ]
   },
   {
     id: "Onix",
-    name: "Onix",
+    name: "onix",
     poster: "images/onix.jpg",
     items: [
       {
-        id: "cola",
-        name: "Coca Cola",
-        price: "10 000 so'm",
-        desc: "Sovuq gazli ichimlik",
-        poster: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400"
+        id: "onix1",
+        name: "Onix 1",
+        price: "850 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "onix/1.jpg"
       },
       {
-        id: "fanta",
-        name: "Fanta",
-        price: "10 000 so'm",
-        desc: "Apelsinli ichimlik",
-        poster: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400"
+        id: "onix2",
+        name: "Onix 2",
+        price: "730 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "onix/2.jpg"
       },
       {
-        id: "coffee",
-        name: "Coffee",
-        price: "18 000 so'm",
-        desc: "Issiq qora kofe",
-        poster: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400"
+        id: "onix3",
+        name: "Onix 3",
+        price: "440 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "onix/3.jpg"
+      },
+      {
+        id: "onix4",
+        name: "Onix 2",
+        price: "750 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "onix/4.jpg"
       }
     ]
   },
   {
-    id: "Tracker 2",
+    id: "tracker_2",
     name: "Tracker 2",
     poster: "images/track.jpg",
     items: [
       {
-        id: "cola",
-        name: "Coca Cola",
-        price: "10 000 so'm",
-        desc: "Sovuq gazli ichimlik",
-        poster: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400"
+        id: "track1",
+        name: "Tracker 2",
+        price: "850 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "track/1.jpg"
       },
       {
-        id: "fanta",
-        name: "Fanta",
-        price: "10 000 so'm",
-        desc: "Apelsinli ichimlik",
-        poster: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400"
+        id: "track2",
+        name: "Tracker 2",
+        price: "770 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "track/2.jpg"
       },
       {
-        id: "coffee",
-        name: "Coffee",
-        price: "18 000 so'm",
-        desc: "Issiq qora kofe",
-        poster: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400"
+        id: "track3",
+        name: "Tracker 2",
+        price: "770 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "track/3.jpg"
+      },
+      {
+        id: "track4",
+        name: "Tracker 2",
+        price: "430 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "track/4.jpg"
+      },
+      {
+        id: "track5",
+        name: "Tracker 2",
+        price: "770 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "track/5.jpg"
       }
     ]
   },
