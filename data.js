@@ -274,26 +274,68 @@ const categories = [
     name: "2024 Padushka",
     poster: "images/padushka.jpg",
     items: [
-      {
+	  {
         id: "pad1",
         name: "padushka 1",
-        price: "10 000 so'm",
-        desc: "Sovuq gazli ichimlik",
+        price: "370 000 so'm",
+        desc: "vaqtinchalik bosh",
         poster: BASE_IMAGE + "padushka/1.jpg"
       },
       {
         id: "pad2",
         name: "Padushka 2",
-        price: "10 000 so'm",
-        desc: "Apelsinli ichimlik",
+        price: "370 000 so'm",
+        desc: "vaqtincha bo'sh",
         poster: BASE_IMAGE + "padushka/2.jpg"
       },
       {
         id: "pad3",
         name: "Padushka 3",
-        price: "18 000 so'm",
-        desc: "Issiq qora kofe",
-        poster: BASE_IMAGE + "padushka/2.jpg"
+        price: "370 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "padushka/3.jpg"
+      },		
+      {
+        id: "pad4",
+        name: "Padushka 4",
+        price: "370 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "padushka/4.jpg"
+	  }		
+      {
+        id: "pad5",
+        name: "padushka 5",
+        price: "370 000 so'm",
+        desc: "vaqtinchalik bosh",
+        poster: BASE_IMAGE + "padushka/5.jpg"
+      },
+      {
+        id: "pad6",
+        name: "Padushka 6",
+        price: "370 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "padushka/6.jpg"
+      },				
+      {
+        id: "pad7",
+        name: "Padushka 7",
+        price: "370 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "padushka/7.jpg"
+      },
+      {
+        id: "pad8",
+        name: "Padushka 8",
+        price: "370 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "padushka/8.jpg"
+      },			
+      {
+        id: "pad9",
+        name: "Padushka 9",
+        price: "370 000 so'm",
+        desc: "vaqtincha bo'sh",
+        poster: BASE_IMAGE + "padushka/9.jpg"
       }
     ]
   },
