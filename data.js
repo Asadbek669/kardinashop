@@ -1,80 +1,278 @@
+const BASE_IMAGE =
+  location.pathname.includes("/category/detail/")
+    ? "../../images/"
+    : "../images/";
 const categories = [
   {
-    id: "fastfood",
-    name: "Fast Food",
-    poster: "https://images.unsplash.com/photo-1550547660-d9450f859349?w=800",
+    id: "TOQIMA",
+    name: "TO'QIMA",
+    poster: "images/toqima.jpg",
     items: [
       {
-        id: "burger",
-        name: "Burger",
-        price: "25 000 so'm",
-        desc: "Mazali mol go'shtli burger",
-        poster: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400"
+        id: "toqima1",
+        name: "1",
+        price: "700 000 so'm",
+		desc: `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyurtma asosida tayyorlanadi:
+
+		🚗 COBALT
+		🚗 LACETTI, GENTRA (MEXANIKA)
+		🚗 LACETTI, GENTRA (AVTOMAT)
+		🚗 SPARK
+		🚐 DAMAS
+		🚐 DAMAS (2 QATOR – Oldi-o‘rta)
+		🚐 DAMAS (1 QATOR – Faqat oldi)
+		🚗 NEXIA 1
+		🚗 NEXIA 2
+		🚗 NEXIA 3
+		🚗 MATIZ
+		🚚 LABO
+
+		✔ Salonni to‘liq himoya qiladi  
+		✔ Estetik va zamonaviy ko‘rinish beradi  
+		✔ Bardoshli va sifatli material  
+		✔ Buyurtma asosida individual tayyorlanadi`,
+        poster: BASE_IMAGE + "toqima/1.jpg"
       },
       {
-        id: "cheeseburger",
-        name: "Cheeseburger",
-        price: "28 000 so'm",
-        desc: "Pishloqli burger",
-        poster: "https://images.unsplash.com/photo-1551782450-a2132b4ba21d?w=400"
+        id: "toqima2",
+        name: "2",
+        price: "700 000 so'm",
+		desc: `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyurtma asosida tayyorlanadi:
+
+		🚗 COBALT
+		🚗 LACETTI, GENTRA (MEXANIKA)
+		🚗 LACETTI, GENTRA (AVTOMAT)
+		🚗 SPARK
+		🚐 DAMAS
+		🚐 DAMAS (2 QATOR – Oldi-o‘rta)
+		🚐 DAMAS (1 QATOR – Faqat oldi)
+		🚗 NEXIA 1
+		🚗 NEXIA 2
+		🚗 NEXIA 3
+		🚗 MATIZ
+		🚚 LABO
+
+		✔ Salonni to‘liq himoya qiladi  
+		✔ Estetik va zamonaviy ko‘rinish beradi  
+		✔ Bardoshli va sifatli material  
+		✔ Buyurtma asosida individual tayyorlanadi`,
+        poster: BASE_IMAGE + "toqima/2.jpg"
       },
       {
-        id: "hotdog",
-        name: "Hot Dog",
-        price: "15 000 so'm",
-        desc: "Sosiska va sous bilan",
-        poster: "https://images.unsplash.com/photo-1599599810769-bcde5a160d32?w=400"
+        id: "toqima3",
+        name: "3",
+        price: "700 000 so'm",
+		desc: `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyurtma asosida tayyorlanadi:
+
+		🚗 COBALT
+		🚗 LACETTI, GENTRA (MEXANIKA)
+		🚗 LACETTI, GENTRA (AVTOMAT)
+		🚗 SPARK
+		🚐 DAMAS
+		🚐 DAMAS (2 QATOR – Oldi-o‘rta)
+		🚐 DAMAS (1 QATOR – Faqat oldi)
+		🚗 NEXIA 1
+		🚗 NEXIA 2
+		🚗 NEXIA 3
+		🚗 MATIZ
+		🚚 LABO
+
+		✔ Salonni to‘liq himoya qiladi  
+		✔ Estetik va zamonaviy ko‘rinish beradi  
+		✔ Bardoshli va sifatli material  
+		✔ Buyurtma asosida individual tayyorlanadi`,
+        poster: BASE_IMAGE + "toqima/3.jpg"
       },
       {
-        id: "fries",
-        name: "Kartoshka Fri",
-        price: "12 000 so'm",
-        desc: "Qarsildoq fri kartoshka",
-        poster: "https://images.unsplash.com/photo-1573080496219-bb080dd4f877?w=400"
+        id: "toqima4",
+        name: "4",
+        price: "700 000 so'm",
+		desc: `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyurtma asosida tayyorlanadi:
+
+		🚗 COBALT
+		🚗 LACETTI, GENTRA (MEXANIKA)
+		🚗 LACETTI, GENTRA (AVTOMAT)
+		🚗 SPARK
+		🚐 DAMAS
+		🚐 DAMAS (2 QATOR – Oldi-o‘rta)
+		🚐 DAMAS (1 QATOR – Faqat oldi)
+		🚗 NEXIA 1
+		🚗 NEXIA 2
+		🚗 NEXIA 3
+		🚗 MATIZ
+		🚚 LABO
+
+		✔ Salonni to‘liq himoya qiladi  
+		✔ Estetik va zamonaviy ko‘rinish beradi  
+		✔ Bardoshli va sifatli material  
+		✔ Buyurtma asosida individual tayyorlanadi`,
+        poster: BASE_IMAGE + "toqima/4.jpg"
+      },
+      {
+        id: "toqima5",
+        name: "5",
+        price: "700 000 so'm",
+		desc: `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyurtma asosida tayyorlanadi:
+
+		🚗 COBALT
+		🚗 LACETTI, GENTRA (MEXANIKA)
+		🚗 LACETTI, GENTRA (AVTOMAT)
+		🚗 SPARK
+		🚐 DAMAS
+		🚐 DAMAS (2 QATOR – Oldi-o‘rta)
+		🚐 DAMAS (1 QATOR – Faqat oldi)
+		🚗 NEXIA 1
+		🚗 NEXIA 2
+		🚗 NEXIA 3
+		🚗 MATIZ
+		🚚 LABO
+
+		✔ Salonni to‘liq himoya qiladi  
+		✔ Estetik va zamonaviy ko‘rinish beradi  
+		✔ Bardoshli va sifatli material  
+		✔ Buyurtma asosida individual tayyorlanadi`,
+        poster: BASE_IMAGE + "toqima/5.jpg"
+      },
+    ]
+  },
+
+  {
+    id: "2020 Fantan HB",
+    name: "2020 Fantan HB",
+    poster: "images/fantan.jpg",
+    items: [
+      {
+        id: "fantan1",
+        name: "Fantan 1",
+        price: "350 000 so'm",
+		desc: `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyurtma asosida tayyorlanadi:
+
+		🚗 COBALT
+		🚗 LACETTI, GENTRA (MEXANIKA)
+		🚗 LACETTI, GENTRA (AVTOMAT)
+		🚗 SPARK
+		🚐 DAMAS
+		🚐 DAMAS (2 QATOR – Oldi-o‘rta)
+		🚐 DAMAS (1 QATOR – Faqat oldi)
+		🚗 NEXIA 1
+		🚗 NEXIA 2
+		🚗 NEXIA 3
+		🚗 MATIZ
+		🚚 LABO
+
+		✔ Salonni to‘liq himoya qiladi  
+		✔ Estetik va zamonaviy ko‘rinish beradi  
+		✔ Bardoshli va sifatli material  
+		✔ Buyurtma asosida individual tayyorlanadi`,
+        poster: BASE_IMAGE + "fantan/1.jpg"
+      },
+      {
+        id: "fantan2",
+        name: "Fantan 2",
+        price: "350 000 so'm",
+		desc: `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyurtma asosida tayyorlanadi:
+
+		🚗 COBALT
+		🚗 LACETTI, GENTRA (MEXANIKA)
+		🚗 LACETTI, GENTRA (AVTOMAT)
+		🚗 SPARK
+		🚐 DAMAS
+		🚐 DAMAS (2 QATOR – Oldi-o‘rta)
+		🚐 DAMAS (1 QATOR – Faqat oldi)
+		🚗 NEXIA 1
+		🚗 NEXIA 2
+		🚗 NEXIA 3
+		🚗 MATIZ
+		🚚 LABO
+
+		✔ Salonni to‘liq himoya qiladi  
+		✔ Estetik va zamonaviy ko‘rinish beradi  
+		✔ Bardoshli va sifatli material  
+		✔ Buyurtma asosida individual tayyorlanadi`,
+        poster: BASE_IMAGE + "fantan/2.jpg"
+      },
+      {
+        id: "fantan3",
+        name: "Fantan 3",
+        price: "350 000 so'm",
+		desc: `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyurtma asosida tayyorlanadi:
+
+		🚗 COBALT
+		🚗 LACETTI, GENTRA (MEXANIKA)
+		🚗 LACETTI, GENTRA (AVTOMAT)
+		🚗 SPARK
+		🚐 DAMAS
+		🚐 DAMAS (2 QATOR – Oldi-o‘rta)
+		🚐 DAMAS (1 QATOR – Faqat oldi)
+		🚗 NEXIA 1
+		🚗 NEXIA 2
+		🚗 NEXIA 3
+		🚗 MATIZ
+		🚚 LABO
+
+		✔ Salonni to‘liq himoya qiladi  
+		✔ Estetik va zamonaviy ko‘rinish beradi  
+		✔ Bardoshli va sifatli material  
+		✔ Buyurtma asosida individual tayyorlanadi`,
+        poster: BASE_IMAGE + "fantan/3.jpg"
+      },
+	  {
+        id: "fantan4",
+        name: "Fantan 4",
+        price: "350 000 so'm",
+		desc: `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyurtma asosida tayyorlanadi:
+
+		🚗 COBALT
+		🚗 LACETTI, GENTRA (MEXANIKA)
+		🚗 LACETTI, GENTRA (AVTOMAT)
+		🚗 SPARK
+		🚐 DAMAS
+		🚐 DAMAS (2 QATOR – Oldi-o‘rta)
+		🚐 DAMAS (1 QATOR – Faqat oldi)
+		🚗 NEXIA 1
+		🚗 NEXIA 2
+		🚗 NEXIA 3
+		🚗 MATIZ
+		🚚 LABO
+
+		✔ Salonni to‘liq himoya qiladi  
+		✔ Estetik va zamonaviy ko‘rinish beradi  
+		✔ Bardoshli va sifatli material  
+		✔ Buyurtma asosida individual tayyorlanadi`,
+        poster: BASE_IMAGE + "fantan/4.jpg"
+      },	  
+      {
+        id: "fantan5",
+        name: "Fantan 5",
+        price: "350 000 so'm",
+		desc: `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyurtma asosida tayyorlanadi:
+
+		🚗 COBALT
+		🚗 LACETTI, GENTRA (MEXANIKA)
+		🚗 LACETTI, GENTRA (AVTOMAT)
+		🚗 SPARK
+		🚐 DAMAS
+		🚐 DAMAS (2 QATOR – Oldi-o‘rta)
+		🚐 DAMAS (1 QATOR – Faqat oldi)
+		🚗 NEXIA 1
+		🚗 NEXIA 2
+		🚗 NEXIA 3
+		🚗 MATIZ
+		🚚 LABO
+
+		✔ Salonni to‘liq himoya qiladi  
+		✔ Estetik va zamonaviy ko‘rinish beradi  
+		✔ Bardoshli va sifatli material  
+		✔ Buyurtma asosida individual tayyorlanadi`,
+        poster: BASE_IMAGE + "fantan/5.jpg"
       }
     ]
   },
 
   {
-    id: "milliy",
-    name: "Milliy Taomlar",
-    poster: "https://images.unsplash.com/photo-1604908176997-125f25cc6f3d?w=800",
-    items: [
-      {
-        id: "osh",
-        name: "Osh",
-        price: "30 000 so'm",
-        desc: "An'anaviy o'zbek palovi",
-        poster: "https://images.unsplash.com/photo-1604908812667-6a6a94d9c6a7?w=400"
-      },
-      {
-        id: "lagmon",
-        name: "Lag'mon",
-        price: "28 000 so'm",
-        desc: "Qo'lda cho'zilgan lag'mon",
-        poster: "https://images.unsplash.com/photo-1617196039897-2c3d8a3c6d5f?w=400"
-      },
-      {
-        id: "manti",
-        name: "Manti",
-        price: "25 000 so'm",
-        desc: "Bug'da pishirilgan manti",
-        poster: "https://images.unsplash.com/photo-1625944525533-473f8c8f2b3c?w=400"
-      },
-      {
-        id: "shashlik",
-        name: "Shashlik",
-        price: "35 000 so'm",
-        desc: "Ko'mirda pishgan go'sht shashlik",
-        poster: "https://images.unsplash.com/photo-1529692236671-f1f6cf9683ba?w=400"
-      }
-    ]
-  },
-
-  {
-    id: "ichimlik",
-    name: "Ichimliklar",
-    poster: "https://images.unsplash.com/photo-1524594154908-edd3683a7a2e?w=800",
+    id: "2024 Padushka",
+    name: "2024 Padushka",
+    poster: "images/padushka.jpg",
     items: [
       {
         id: "cola",
@@ -101,9 +299,9 @@ const categories = [
   },
 
   {
-    id: "dessert",
-    name: "Shirinliklar",
-    poster: "https://images.unsplash.com/photo-1511910849309-0dffb8785146?w=800",
+    id: "Shatlanka",
+    name: "Shatlanka",
+    poster: "images/shatlanka.jpg",
     items: [
       {
         id: "cake",
@@ -127,5 +325,61 @@ const categories = [
         poster: "https://images.unsplash.com/photo-1501443762994-82bd5dace89a?w=400"
       }
     ]
-  }
+  },
+  {
+    id: "Onix",
+    name: "Onix",
+    poster: "images/onix.jpg",
+    items: [
+      {
+        id: "cola",
+        name: "Coca Cola",
+        price: "10 000 so'm",
+        desc: "Sovuq gazli ichimlik",
+        poster: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400"
+      },
+      {
+        id: "fanta",
+        name: "Fanta",
+        price: "10 000 so'm",
+        desc: "Apelsinli ichimlik",
+        poster: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400"
+      },
+      {
+        id: "coffee",
+        name: "Coffee",
+        price: "18 000 so'm",
+        desc: "Issiq qora kofe",
+        poster: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400"
+      }
+    ]
+  },
+  {
+    id: "Tracker 2",
+    name: "Tracker 2",
+    poster: "images/track.jpg",
+    items: [
+      {
+        id: "cola",
+        name: "Coca Cola",
+        price: "10 000 so'm",
+        desc: "Sovuq gazli ichimlik",
+        poster: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=400"
+      },
+      {
+        id: "fanta",
+        name: "Fanta",
+        price: "10 000 so'm",
+        desc: "Apelsinli ichimlik",
+        poster: "https://images.unsplash.com/photo-1613478223719-2ab802602423?w=400"
+      },
+      {
+        id: "coffee",
+        name: "Coffee",
+        price: "18 000 so'm",
+        desc: "Issiq qora kofe",
+        poster: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?w=400"
+      }
+    ]
+  },
 ];
