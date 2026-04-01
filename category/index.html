@@ -125,13 +125,51 @@ body{
   font-weight:bold;
 }
 
+html{
+  scroll-behavior: smooth;
+}
 </style>
 </head>
 
 <body>
-<div class="header">
-  <span onclick="goHome()">⬅</span>
-  <span class="title">Menu</span>
+<div style="
+  position:fixed;
+  top:0;
+  width:100%;
+  height:60px;
+  display:flex;
+  align-items:center;
+  padding:0 15px;
+  z-index:20;
+  background:rgba(20,20,20,0.6);
+  backdrop-filter:blur(10px);
+  -webkit-backdrop-filter:blur(10px);
+  border-bottom:1px solid rgba(255,255,255,0.05);
+">
+
+  <div onclick="goHome()" style="
+    width:36px;
+    height:36px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    border-radius:50%;
+    background:#2a2a2a;
+    cursor:pointer;
+    font-size:18px;
+  ">
+    ⮜
+  </div>
+
+  <div style="
+    margin-left:12px;
+    font-size:16px;
+    font-weight:600;
+    letter-spacing:0.5px;
+  ">
+    Orqaga
+  </div>
+
 </div>
 <div class="topbar">
   <div class="slider" id="slider"></div>
@@ -159,11 +197,11 @@ function renderSlider(){
     el.className="cat "+(i===activeIndex?"active":"");
     el.innerText=c.name;
 
-    el.onclick=()=>{
-      activeIndex=i;
-      document.getElementById(c.id).scrollIntoView({behavior:"smooth"});
-      updateSlider();
-    };
+	el.onclick = () => {
+	  activeIndex = i;
+	  smoothScrollTo(document.getElementById(c.id));
+	  updateSlider();
+	};
 
     slider.appendChild(el);
   });
@@ -246,17 +284,29 @@ window.addEventListener("touchend",e=>{
 
   if(Math.abs(diff)<70) return;
 
-  let next=activeIndex;
+  if(next !== activeIndex){
+    smoothScrollTo(document.getElementById(categories[next].id));
+  }
 
   if(diff<0 && activeIndex<categories.length-1) next++;
   if(diff>0 && activeIndex>0) next--;
 
   if(next!==activeIndex){
     document.getElementById(categories[next].id)
-      .scrollIntoView({behavior:"smooth"});
+      .scrollIntoView({
+	    behavior: "smooth",
+	    block: "start"
+	  });
   }
 });
+function smoothScrollTo(element){
+  const y = element.getBoundingClientRect().top + window.pageYOffset - 100;
 
+  window.scrollTo({
+    top: y,
+    behavior: "smooth"
+  });
+}
 /* INIT */
 renderFeed();
 renderSlider();
