@@ -18,10 +18,8 @@ const DETAIL_DESC = `Sifatli TO'QIMA qoplamalar quyidagi avtomobillar uchun buyu
 ✔ Bardoshli va sifatli material  
 ✔ Buyurtma asosida individual tayyorlanadi`;
 
-const BASE_IMAGE =
-  location.pathname.includes("/category/detail/")
-    ? "../../images/"
-    : "../images/";
+const BASE_IMAGE = "https://cdn.fastora.uz/kardina/";
+
 const categories = [
   {
     id: "TOQIMA",
