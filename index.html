@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Menu Home</title>
+
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header class="header">
+  🍽️ Menu Katalog
+</header>
+
+<!-- MAIN -->
+<div id="app"></div>
+
+<!-- FOOTER -->
+<footer class="footer">
+  <div>📞 +998 90 123 45 67</div>
+  <div>✈️ Telegram: @yourchannel</div>
+  <div class="copy">© 2026 All rights reserved</div>
+</footer>
+
+<script src="data.js"></script>
+
+<script>
+const app = document.getElementById("app");
+
+app.innerHTML = `<h2 class="title">Kategoriyalar</h2>`;
+
+const slider = document.createElement("div");
+slider.className = "slider";
+
+categories.forEach(cat => {
+  const card = document.createElement("div");
+  card.className = "slider-card";
+
+  card.innerHTML = `
+    <img src="${cat.poster}">
+    <div class="name">${cat.name}</div>
+  `;
+
+  card.onclick = () => {
+    window.location.href = `category/index.html?id=${cat.id}`;
+  };
+
+  slider.appendChild(card);
+});
+
+app.appendChild(slider);
+</script>
+
+</body>
+</html>

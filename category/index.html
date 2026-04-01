@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Food App</title>
+
+<style>
+body{
+  margin:0;
+  font-family:Arial;
+  background:#0f0f0f;
+  color:white;
+}
+
+/* TOP SLIDER */
+.topbar{
+  position:fixed;
+  top:50px; /* MUHIM */
+  width:100%;
+  background:#1a1a1a;
+  z-index:10;
+  padding:10px 0;
+}
+
+.slider{
+  display:flex;
+  overflow-x:auto;
+  gap:10px;
+  padding:0 10px;
+}
+
+.cat{
+  flex-shrink:0;
+  padding:10px 14px;
+  background:#2a2a2a;
+  border-radius:20px;
+  font-size:13px;
+  cursor:pointer;
+  white-space:nowrap;
+}
+
+.cat.active{
+  background:#00ff99;
+  color:black;
+}
+
+/* FEED */
+#feed{
+  padding-top:70px;
+}
+
+/* CATEGORY HEADER */
+.section-title{
+  position:sticky;
+  top:50px;
+  background:#0f0f0f;
+  padding:12px;
+  font-weight:bold;
+  font-size:16px;
+  z-index:5;
+  border-bottom:none; /* shu */
+}
+
+/* GRID */
+.grid{
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:10px;
+  padding:10px;
+}
+
+.card{
+  background:#1c1c1c;
+  border-radius:12px;
+  overflow:hidden;
+}
+
+.card img{
+  width:100%;
+  height:120px;
+  object-fit:cover;
+}
+
+.info{
+  padding:6px;
+}
+
+.name{
+  font-size:14px;
+}
+
+.price{
+  color:#00ff99;
+  font-size:12px;
+}
+
+.desc{
+  font-size:11px;
+  color:#aaa;
+  overflow:hidden;
+  display:-webkit-box;
+  -webkit-line-clamp:1;
+  -webkit-box-orient:vertical;
+}
+.header{
+  position:fixed;
+  top:0;
+  width:100%;
+  height:50px;
+  background:#111;
+  display:flex;
+  align-items:center;
+  padding:0 15px;
+  font-size:18px;
+  z-index:20;
+}
+
+.header span{
+  cursor:pointer;
+}
+
+.header .title{
+  margin-left:10px;
+  font-weight:bold;
+}
+
+</style>
+</head>
+
+<body>
+<div class="header">
+  <span onclick="goHome()">⬅</span>
+  <span class="title">Menu</span>
+</div>
+<div class="topbar">
+  <div class="slider" id="slider"></div>
+</div>
+
+<div id="feed"></div>
+
+<script src="../data.js"></script>
+<script>
+const feed = document.getElementById("feed");
+const slider = document.getElementById("slider");
+
+let activeIndex = 0;
+let sections = [];
+
+function goHome(){
+  window.location.href = "../index.html";
+}
+/* RENDER SLIDER */
+function renderSlider(){
+  slider.innerHTML="";
+
+  categories.forEach((c,i)=>{
+    const el=document.createElement("div");
+    el.className="cat "+(i===activeIndex?"active":"");
+    el.innerText=c.name;
+
+    el.onclick=()=>{
+      activeIndex=i;
+      document.getElementById(c.id).scrollIntoView({behavior:"smooth"});
+      updateSlider();
+    };
+
+    slider.appendChild(el);
+  });
+}
+
+/* RENDER FEED */
+function renderFeed(){
+  feed.innerHTML="";
+
+  categories.forEach(cat=>{
+    const section=document.createElement("div");
+    section.className="section";
+    section.id=cat.id;
+
+    section.innerHTML=`
+      <div class="section-title">${cat.name}</div>
+    `;
+
+    const grid=document.createElement("div");
+    grid.className="grid";
+
+    cat.items.forEach(item=>{
+      const card=document.createElement("div");
+      card.className="card";
+	  card.onclick = () => {
+	    window.location.href = `detail/index.html?cat=${cat.id}&id=${item.id}`;
+	  };
+      card.innerHTML=`
+        <img src="${item.poster}">
+        <div class="info">
+          <div class="name">${item.name}</div>
+          <div class="price">${item.price}</div>
+          <div class="desc">${item.desc}</div>
+        </div>
+      `;
+
+      grid.appendChild(card);
+    });
+
+    section.appendChild(grid);
+    feed.appendChild(section);
+  });
+
+  sections=[...document.querySelectorAll(".section")];
+}
+
+/* ACTIVE CATEGORY DETECT */
+window.addEventListener("scroll",()=>{
+  let currentIndex=0;
+
+  sections.forEach((sec,i)=>{
+    const top=sec.getBoundingClientRect().top;
+    if(top < window.innerHeight/2){
+      currentIndex=i;
+    }
+  });
+
+  if(currentIndex!==activeIndex){
+    activeIndex=currentIndex;
+    updateSlider();
+  }
+});
+
+/* UPDATE SLIDER UI */
+function updateSlider(){
+  document.querySelectorAll(".cat").forEach((c,i)=>{
+    c.classList.toggle("active",i===activeIndex);
+  });
+}
+
+/* SWIPE SUPPORT */
+let startY=0;
+
+window.addEventListener("touchstart",e=>{
+  startY=e.touches[0].clientY;
+});
+
+window.addEventListener("touchend",e=>{
+  let diff=e.changedTouches[0].clientY-startY;
+
+  if(Math.abs(diff)<70) return;
+
+  let next=activeIndex;
+
+  if(diff<0 && activeIndex<categories.length-1) next++;
+  if(diff>0 && activeIndex>0) next--;
+
+  if(next!==activeIndex){
+    document.getElementById(categories[next].id)
+      .scrollIntoView({behavior:"smooth"});
+  }
+});
+
+/* INIT */
+renderFeed();
+renderSlider();
+window.addEventListener("load", () => {
+
+  const url = new URL(window.location.href);
+  const startId = url.searchParams.get("id");
+
+  if(startId){
+
+    const targetIndex = categories.findIndex(c => c.id === startId);
+
+    if(targetIndex !== -1){
+
+      activeIndex = targetIndex;
+
+      setTimeout(() => {
+        const el = document.getElementById(startId);
+        if(el){
+          el.scrollIntoView({ behavior: "smooth", block: "start" });
+        }
+        updateSlider();
+      }, 300);
+
+    }
+  }
+});
+</script>
+
+</body>
+</html>
