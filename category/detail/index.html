@@ -85,10 +85,36 @@ input{
   color:black;
   font-weight:bold;
 }
+#fsImg{
+  max-width:95%;
+  max-height:95%;
+  object-fit:contain;
+  transform: scale(2); /* 👈 default zoom */
+  transition: transform 0.3s ease;
+}
 </style>
 </head>
 
 <body>
+
+<div id="fsModal" onclick="closeFullScreen()" style="
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,0.95);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+">
+  <img id="fsImg" style="
+    max-width:95%;
+    max-height:95%;
+    object-fit:contain;
+  ">
+</div>
 
 <div onclick="history.back()" style="
   position:fixed;
@@ -275,11 +301,33 @@ if(!item){
     background:#0f0f0f;
   ">
 
-    <img src="${item.poster}" style="
-      width:100%;
-      height:220px;
-      object-fit:cover;
-    ">
+	<div style="position:relative;">
+	  <img id="posterImg" src="${item.poster}" style="
+		width:100%;
+		height:220px;
+		object-fit:cover;
+	  ">
+
+	  <!-- FULLSCREEN BUTTON -->
+	  <div onclick="openFullScreen()" style="
+		position:absolute;
+		bottom:10px;
+		right:10px;
+		width:38px;
+		height:38px;
+		border-radius:10px;
+		background:rgba(0,0,0,0.6);
+		display:flex;
+		align-items:center;
+		justify-content:center;
+		cursor:pointer;
+		font-size:18px;
+		color:#fff;
+		backdrop-filter:blur(6px);
+	  ">
+		⛶
+	  </div>
+	</div>
 
     <div style="
       padding:12px 15px;
@@ -400,6 +448,18 @@ function sendOrder(){
   const telegramUrl = `https://t.me/U2BEK_712?text=${encodeURIComponent(text)}`;
 
   window.open(telegramUrl, "_blank");
+}
+
+function openFullScreen(){
+  const img = document.getElementById("posterImg");
+  const fsImg = document.getElementById("fsImg");
+
+  fsImg.src = img.src;
+  document.getElementById("fsModal").style.display = "flex";
+}
+
+function closeFullScreen(){
+  document.getElementById("fsModal").style.display = "none";
 }
 </script>
 
