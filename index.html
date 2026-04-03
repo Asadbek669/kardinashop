@@ -3,7 +3,29 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Menu Home</title>
+
+<title>Kardina | Sifatli avtomobil qoplamalari</title>
+
+<!-- SEO -->
+<meta name="description" content="Kardina - avtomobillar uchun sifatli TO'QIMA qoplamalar. Cobalt, Gentra, Nexia, Spark va boshqa avtomobillar uchun buyurtma asosida tayyorlanadi.">
+<meta name="keywords" content="kardina, avtomobil qoplama, toqima salon, cobalt chexol, gentra chexol, nexia salon, spark chexol">
+<meta name="author" content="Kardina">
+
+<!-- FAVICON -->
+<link rel="icon" type="image/png" href="https://cdn.fastora.uz/kardina/logo.png">
+
+<!-- OPEN GRAPH (Telegram, Facebook, WhatsApp preview) -->
+<meta property="og:title" content="Kardina | Avtomobil qoplamalari">
+<meta property="og:description" content="Sifatli TO'QIMA qoplamalar. Buyurtma asosida tayyorlanadi.">
+<meta property="og:image" content="https://cdn.fastora.uz/kardina/logo.png">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://kardina.fastora.uz">
+
+<!-- TWITTER CARD -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kardina | Avtomobil qoplamalari">
+<meta name="twitter:description" content="Sifatli TO'QIMA qoplamalar buyurtma asosida">
+<meta name="twitter:image" content="https://cdn.fastora.uz/kardina/logo.png">
 
 <style>
 body{
@@ -229,6 +251,53 @@ body{
 .see-all:hover span{
   transform:translateX(3px);
 }
+
+.shorts-slider{
+  display:flex;
+  overflow-x:auto;
+  gap:12px;
+  padding:15px;
+  scroll-snap-type:x mandatory;
+  -webkit-overflow-scrolling:touch;
+}
+
+/* scroll bar yashirish */
+.shorts-slider::-webkit-scrollbar{
+  display:none;
+}
+
+.short-card{
+  flex:0 0 140px;
+  aspect-ratio:9/16;
+  border-radius:14px;
+  overflow:hidden;
+  position:relative;
+  scroll-snap-align:start;
+  cursor:pointer;
+  background:#1a1a1a;
+  border:1px solid rgba(255,255,255,0.05);
+  transition:0.2s;
+}
+
+.short-card:hover{
+  transform:scale(1.05);
+}
+
+.short-card img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+.short-title{
+  position:absolute;
+  bottom:0;
+  left:0;
+  right:0;
+  padding:8px;
+  font-size:12px;
+  background:linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+}
 </style>
 </head>
 
@@ -320,9 +389,14 @@ body{
 const app = document.getElementById("app");
 
 /* =========================
-   TITLE SECTION
+   RESET
 ========================= */
-app.innerHTML = `
+app.innerHTML = "";
+
+/* =========================
+   CATEGORY HEADER
+========================= */
+app.innerHTML += `
   <div class="section-header">
     <h2 class="title">Kategoriyalar</h2>
 
@@ -333,7 +407,7 @@ app.innerHTML = `
 `;
 
 /* =========================
-   SLIDER
+   CATEGORY SLIDER
 ========================= */
 const slider = document.createElement("div");
 slider.className = "slider";
@@ -357,7 +431,52 @@ categories.forEach(cat => {
 app.appendChild(slider);
 
 /* =========================
-   BANNER SYSTEM
+   SHORTS HEADER
+========================= */
+app.innerHTML += `
+  <div class="section-header">
+    <h2 class="title">Shorts</h2>
+
+    <div class="see-all" onclick="goShortsPage()">
+      Barchasini ko‘rish <span>›</span>
+    </div>
+  </div>
+`;
+
+/* =========================
+   SHORTS GRID (2 COLUMN, 9:16)
+========================= */
+const shortsSlider = document.createElement("div");
+shortsSlider.className = "shorts-slider";
+
+/* demo shorts (o‘zing data.js ga ulaysan) */
+const shorts = [
+  {id:1, title:"Short 1", poster:"images/shorts.jpg"},
+  {id:2, title:"Short 2", poster:"images/shorts.jpg"},
+  {id:3, title:"Short 3", poster:"images/shorts.jpg"},
+  {id:4, title:"Short 4", poster:"images/shorts.jpg"},
+];
+
+shorts.forEach(v => {
+  const item = document.createElement("div");
+  item.className = "short-card";
+
+  item.innerHTML = `
+    <img src="${v.poster}">
+    <div class="short-title">${v.title}</div>
+  `;
+
+  item.onclick = () => {
+    window.location.href = `shorts.html?id=${v.id}`;
+  };
+
+  shortsSlider.appendChild(item);
+});
+
+app.appendChild(shortsSlider);
+
+/* =========================
+   BANNER
 ========================= */
 const banners = [
   "🔥 Eng sifatli TO'QIMA qoplamalar",
@@ -377,7 +496,6 @@ function changeBanner(){
   setTimeout(() => {
     banner.innerText = banners[i];
     banner.style.opacity = "1";
-
     i = (i + 1) % banners.length;
   }, 300);
 }
@@ -392,9 +510,32 @@ function goCategoryPage(){
   window.location.href = "category/index.html";
 }
 
+function goShortsPage(){
+  window.location.href = "shorts.html";
+}
+
 function goCart(){
   window.location.href = "cart.html";
 }
+
+/* =========================
+   CART
+========================= */
+function updateCartUI(){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  let total = 0;
+  cart.forEach(item => total += item.count || 0);
+
+  const el = document.getElementById("cartCount");
+  if(el) el.innerText = total;
+}
+
+document.addEventListener("DOMContentLoaded", updateCartUI);
+window.addEventListener("storage", updateCartUI);
+window.addEventListener("cartUpdated", updateCartUI);
+setInterval(updateCartUI, 1000);
+
 /* =========================
    CART UI UPDATE (FIXED)
 ========================= */
