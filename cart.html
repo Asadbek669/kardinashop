@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Savatcha</title>
+
+<style>
+body{
+  margin:0;
+  background:#0f0f0f;
+  color:white;
+  font-family:Arial;
+}
+
+/* HEADER */
+.header{
+  padding:15px;
+  font-size:20px;
+  font-weight:bold;
+}
+
+/* ITEM */
+.item{
+  display:flex;
+  gap:12px;
+  padding:12px;
+  border-bottom:1px solid #222;
+  align-items:center;
+}
+
+.item img{
+  width:65px;
+  height:65px;
+  object-fit:cover;
+  border-radius:10px;
+}
+
+/* INFO */
+.info{
+  flex:1;
+}
+
+.name{
+  font-size:14px;
+  margin-bottom:4px;
+}
+
+.price{
+  font-size:13px;
+  color:#aaa;
+}
+
+.sum{
+  color:#00ff99;
+  font-weight:bold;
+  margin-top:4px;
+}
+
+/* COUNTER */
+.counter{
+  display:flex;
+  align-items:center;
+  background:#1a1a1a;
+  border-radius:10px;
+  overflow:hidden;
+  margin-top:6px;
+}
+
+.counter button{
+  width:32px;
+  height:32px;
+  border:none;
+  background:#111;
+  color:#fff;
+  cursor:pointer;
+  font-size:16px;
+}
+
+.counter input{
+  width:45px;
+  text-align:center;
+  border:none;
+  background:#1a1a1a;
+  color:#fff;
+  font-size:15px;
+}
+
+/* REMOVE */
+.remove{
+  background:none;
+  border:none;
+  color:#ff4d4d;
+  font-size:18px;
+  cursor:pointer;
+}
+
+/* EMPTY */
+.empty{
+  text-align:center;
+  margin-top:100px;
+  color:#777;
+}
+
+/* BOTTOM BAR */
+.bottom{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 12px;
+  background: rgba(15,15,15,0.9);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid #222;
+}
+
+.total{
+  font-size: 14px;
+  color: #fff;
+}
+
+.send{
+  padding: 12px 18px;
+  border-radius: 12px;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  color: #000;
+
+  /* 🔥 CHIROYLI GRADIENT */
+  background: linear-gradient(135deg, #00ff99, #00c2ff);
+
+  /* SOYA */
+  box-shadow: 0 8px 20px rgba(0,255,153,0.25);
+
+  transition: 0.3s ease;
+}
+
+/* HOVER EFFECT */
+.send:hover{
+  transform: scale(1.05);
+  box-shadow: 0 10px 25px rgba(0,255,153,0.4);
+}
+
+/* CLICK EFFECT */
+.send:active{
+  transform: scale(0.95);
+}
+
+/* TOP GLASS HEADER */
+.topbar{
+  position:fixed;
+  top:0;
+  left:0;
+  width:100%;
+  height:60px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(20,20,20,0.6);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  z-index:1000;
+}
+
+/* TITLE */
+.title{
+  font-size:17px;
+  font-weight:600;
+  color:#fff;
+}
+
+/* BACK BUTTON */
+.back-btn{
+  position:absolute;
+  left:12px;
+
+  width:36px;
+  height:36px;
+  border-radius:10px;
+
+  display:flex;
+  align-items:center;
+  justify-content:center;
+
+  background:rgba(255,255,255,0.08);
+  color:#fff;
+  cursor:pointer;
+  transition:0.2s;
+}
+
+.back-btn:hover{
+  background:rgba(255,255,255,0.15);
+}
+
+#cartList{
+  margin-top:70px;   /* 👈 topbar balandligi */
+  margin-bottom:100px; /* pastdagi bar uchun */
+}
+</style>
+</head>
+
+<body>
+
+<div class="topbar">
+  <div onclick="history.back()" class="back-btn">
+    ❮
+  </div>
+
+  <div class="title">
+    Savatcha
+  </div>
+</div>
+
+<div id="cartList"></div>
+
+<div class="bottom">
+  <div class="total" id="totalPrice">0 so'm</div>
+  <div class="send" onclick="sendAll()">Buyurtmani yuborish</div>
+</div>
+
+<div id="phoneModal" style="
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  background:rgba(0,0,0,0.6);
+  display:none;
+  align-items:center;
+  justify-content:center;
+  z-index:9999;
+">
+  <div style="
+    width:90%;
+    max-width:320px;
+    background:#1a1a1a;
+    padding:20px;
+    border-radius:14px;
+    border:1px solid #333;
+    text-align:center;
+  ">
+
+	<h3 style="margin-bottom:10px; display:flex; align-items:center; justify-content:center; gap:8px;">
+	  
+	  <!-- PHONE SVG ICON -->
+	  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00ff99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.86.33 1.7.61 2.5a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.58-1.13a2 2 0 0 1 2.11-.45c.8.28 1.64.49 2.5.61A2 2 0 0 1 22 16.92z"/>
+	  </svg>
+
+	  Telefon raqam
+	</h3>
+
+	<input id="phoneInput" type="tel" value="+998 " placeholder="+998 90 123 45 67" style="
+	  width:100%;
+	  height:44px;
+	  box-sizing:border-box;
+
+	  padding:12px;
+	  border-radius:10px;
+	  border:none;
+	  outline:none;
+	  background:#111;
+	  color:#fff;
+	  margin-bottom:15px;
+	  font-size:14px;
+	">
+
+	<button onclick="confirmSend()" style="
+	  width:100%;
+	  padding:12px;
+	  border:none;
+	  border-radius:10px;
+	  background:linear-gradient(90deg,#00ff99,#00c2ff);
+	  color:#000;
+	  font-weight:bold;
+	  cursor:pointer;
+	  font-size:14px;
+	  display:flex;
+	  align-items:center;
+	  justify-content:center;
+	  gap:8px;
+	">
+	  
+	  <!-- SEND SVG ICON -->
+	  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+		<line x1="22" y1="2" x2="11" y2="13"></line>
+		<polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+	  </svg>
+
+	  YUBORISH
+	</button>
+
+    <div onclick="closeModal()" style="
+      margin-top:10px;
+      color:#888;
+      font-size:12px;
+      cursor:pointer;
+    ">
+      Bekor qilish
+    </div>
+
+  </div>
+</div>
+<script>
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+const list = document.getElementById("cartList");
+
+/* RENDER */
+function renderCart(){
+  list.innerHTML = "";
+  let total = 0;
+
+  if(cart.length === 0){
+    list.innerHTML = `<div class="empty">Savatcha bo‘sh 😕</div>`;
+    document.getElementById("totalPrice").innerText = "0 so'm";
+    return;
+  }
+
+  cart.forEach(item=>{
+    const price = parseInt(item.price.replace(/\D/g,""));
+    const sum = price * item.count;
+    total += sum;
+
+    list.innerHTML += `
+      <div class="item">
+        <img src="${item.poster}">
+        
+        <div class="info">
+          <div class="name">${item.name}</div>
+          <div class="price">${item.price}</div>
+
+          <div class="counter">
+            <button onclick="changeCount('${item.id}', -1)">−</button>
+            <input 
+			  type="number"
+			  min="1"
+			  value="${item.count}"
+			  oninput="inputChange('${item.id}', this.value)"
+			>
+            <button onclick="changeCount('${item.id}', 1)">+</button>
+          </div>
+
+          <div class="sum">${sum.toLocaleString()} so'm</div>
+        </div>
+
+		<button class="remove" onclick="removeItem('${item.id}')">
+		  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+			<!-- lid -->
+			<polyline points="3 6 5 6 21 6"></polyline>
+
+			<!-- top -->
+			<path d="M8 6V4h8v2"></path>
+
+			<!-- body -->
+			<path d="M19 6l-1 14a2 2 0 0 1-2 2H8
+					 a2 2 0 0 1-2-2L5 6"></path>
+
+			<!-- inner lines -->
+			<line x1="10" y1="11" x2="10" y2="17"></line>
+			<line x1="14" y1="11" x2="14" y2="17"></line>
+
+		  </svg>
+		</button>
+      </div>
+    `;
+  });
+
+  document.getElementById("totalPrice").innerText =
+    "Jami: " + total.toLocaleString() + " so'm";
+}
+
+/* CHANGE COUNT */
+function changeCount(id, val){
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+
+  item.count += val;
+  if(item.count < 1) item.count = 1;
+
+  saveCart();
+}
+
+/* INPUT CHANGE */
+function inputChange(id, value){
+  const item = cart.find(i => i.id === id);
+  if(!item) return;
+
+  let val = parseInt(value);
+  if(isNaN(val) || val < 1) val = 1;
+
+  item.count = val;
+  saveCart();
+}
+
+/* REMOVE */
+function removeItem(id){
+  cart = cart.filter(i => i.id !== id);
+  saveCart();
+}
+
+/* SAVE */
+function saveCart(){
+  localStorage.setItem("cart", JSON.stringify(cart));
+  renderCart();
+}
+
+/* SEND */
+function sendAll(){
+  if(cart.length === 0){
+    alert("Savatcha bo‘sh");
+    return;
+  }
+
+  document.getElementById("phoneModal").style.display = "flex";
+}
+
+const phoneInput = document.getElementById("phoneInput");
+
+// +998 doim qoladi
+phoneInput.addEventListener("input", function () {
+  let value = phoneInput.value;
+
+  // faqat raqamlarni olish
+  let numbers = value.replace(/\D/g, "");
+
+  // 998 ni majburlash
+  if (!numbers.startsWith("998")) {
+    numbers = "998";
+  }
+
+  // 998 dan keyin faqat 9 ta raqam
+  numbers = numbers.slice(0, 12);
+
+  // formatlash
+  let formatted = "+998 ";
+
+  if (numbers.length > 3) formatted += numbers.slice(3, 5);
+  if (numbers.length > 5) formatted += " " + numbers.slice(5, 8);
+  if (numbers.length > 8) formatted += " " + numbers.slice(8, 10);
+  if (numbers.length > 10) formatted += " " + numbers.slice(10, 12);
+
+  phoneInput.value = formatted;
+});
+
+window.closeModal = function(){
+  document.getElementById("phoneModal").style.display = "none";
+  document.getElementById("phoneInput").value = "+998 ";
+}
+
+window.confirmSend = function(){
+  let phoneRaw = document.getElementById("phoneInput").value;
+  let numbers = phoneRaw.replace(/\D/g,"");
+
+  if(numbers.length !== 12 || !numbers.startsWith("998")){
+    alert("Telefon noto‘g‘ri! +998 bilan 9 ta raqam kiriting");
+    return;
+  }
+
+  let phone = "+" + numbers; // 🔥 ENG MUHIM QATOR
+
+  let text = "🛒 YANGI BUYURTMA:\n\n";
+  let total = 0;
+
+  cart.forEach(i=>{
+    const price = parseInt(i.price.replace(/\D/g,""));
+    const sum = price * i.count;
+    total += sum;
+
+    text += `📦 ${i.name}\n`;
+    text += `📸 ${i.poster}\n`;
+    text += `   ${i.count} x ${i.price}\n`;
+    text += `   = ${sum.toLocaleString()} so'm\n\n`;
+  });
+
+  text += `💰 Jami: ${total.toLocaleString()} so'm\n`;
+  text += `📱 Telefon: ${phone}`;
+
+  const url = `https://t.me/U2BEK_712?text=${encodeURIComponent(text)}`;
+  window.open(url, "_blank");
+
+  closeModal();
+}
+
+renderCart();
+</script>
+
+</body>
+</html>
