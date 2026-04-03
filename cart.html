@@ -204,6 +204,32 @@ body{
   margin-top:70px;   /* 👈 topbar balandligi */
   margin-bottom:100px; /* pastdagi bar uchun */
 }
+.empty{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px;
+  text-align:center;
+  color:#aaa;
+}
+
+.empty-icon{
+  margin-bottom:10px;
+  opacity:0.9;
+}
+
+.empty-icon svg{
+  width:90px;
+  height:90px;
+}
+
+.empty-text{
+  font-size:16px;
+  font-weight:600;
+  color:#bbb;
+}
+	
 </style>
 </head>
 
@@ -317,7 +343,21 @@ function renderCart(){
   let total = 0;
 
   if(cart.length === 0){
-    list.innerHTML = `<div class="empty">Savatcha bo‘sh 😕</div>`;
+    list.innerHTML = `
+  <div class="empty">
+    <div class="empty-icon">
+      <svg width="90" height="90" viewBox="0 0 24 24" fill="none"
+        xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 6h15l-1.5 9h-12L6 6z" stroke="white" stroke-width="1.5"/>
+        <path d="M6 6L5 3H2" stroke="white" stroke-width="1.5"/>
+        <circle cx="9" cy="20" r="1" fill="white"/>
+        <circle cx="18" cy="20" r="1" fill="white"/>
+      </svg>
+    </div>
+
+    <div class="empty-text">Savatcha bo‘sh</div>
+  </div>
+`;
     document.getElementById("totalPrice").innerText = "0 so'm";
     return;
   }
