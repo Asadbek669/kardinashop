@@ -381,30 +381,28 @@ function smoothScrollTo(element){
 /* INIT */
 renderFeed();
 renderSlider();
-window.addEventListener("load", () => {
 
-  const url = new URL(window.location.href);
-  const startId = url.searchParams.get("id");
+/* 🔥 ID orqali to‘g‘ri scroll */
+const url = new URL(window.location.href);
+const startId = url.searchParams.get("id");
 
-  if(startId){
+if(startId){
+  const index = categories.findIndex(c => c.id === startId);
+  const el = document.getElementById(startId);
 
-    const targetIndex = categories.findIndex(c => c.id === startId);
+  if(index !== -1 && el){
+    activeIndex = index;
 
-    if(targetIndex !== -1){
+    setTimeout(() => {
+      el.scrollIntoView({
+        behavior: "smooth",
+        block: "start"
+      });
 
-      activeIndex = targetIndex;
-
-      setTimeout(() => {
-        const el = document.getElementById(startId);
-        if(el){
-          el.scrollIntoView({ behavior: "smooth", block: "start" });
-        }
-        updateSlider();
-      }, 300);
-
-    }
+      updateSlider();
+    }, 100);
   }
-});
+}
 
 function updateCartUI(){
   let cart = JSON.parse(localStorage.getItem("cart")) || [];
