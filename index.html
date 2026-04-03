@@ -3,29 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>Kardina | Sifatli avtomobil qoplamalari</title>
-
-<!-- SEO -->
-<meta name="description" content="Kardina - avtomobillar uchun sifatli TO'QIMA qoplamalar. Cobalt, Gentra, Nexia, Spark va boshqa avtomobillar uchun buyurtma asosida tayyorlanadi.">
-<meta name="keywords" content="kardina, avtomobil qoplama, toqima salon, cobalt chexol, gentra chexol, nexia salon, spark chexol">
-<meta name="author" content="Kardina">
-
-<!-- FAVICON -->
-<link rel="icon" type="image/png" href="images/logo.png">
-
-<!-- OPEN GRAPH (Telegram, Facebook, WhatsApp preview) -->
-<meta property="og:title" content="Kardina | Avtomobil qoplamalari">
-<meta property="og:description" content="Sifatli TO'QIMA qoplamalar. Buyurtma asosida tayyorlanadi.">
-<meta property="og:image" content="https://yourdomain.uz/images/preview.jpg">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://yourdomain.uz">
-
-<!-- TWITTER CARD -->
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kardina | Avtomobil qoplamalari">
-<meta name="twitter:description" content="Sifatli TO'QIMA qoplamalar buyurtma asosida">
-<meta name="twitter:image" content="https://yourdomain.uz/images/preview.jpg">
+<title>Menu Home</title>
 
 <style>
 body{
@@ -341,7 +319,9 @@ body{
 <script>
 const app = document.getElementById("app");
 
-/* TITLE */
+/* =========================
+   TITLE SECTION
+========================= */
 app.innerHTML = `
   <div class="section-header">
     <h2 class="title">Kategoriyalar</h2>
@@ -352,7 +332,9 @@ app.innerHTML = `
   </div>
 `;
 
-/* SLIDER */
+/* =========================
+   SLIDER
+========================= */
 const slider = document.createElement("div");
 slider.className = "slider";
 
@@ -374,7 +356,9 @@ categories.forEach(cat => {
 
 app.appendChild(slider);
 
-/* BANNER SYSTEM */
+/* =========================
+   BANNER SYSTEM
+========================= */
 const banners = [
   "🔥 Eng sifatli TO'QIMA qoplamalar",
   "🚗 Barcha avtomobillar uchun tayyorlanadi",
@@ -386,6 +370,8 @@ let i = 0;
 const banner = document.getElementById("banner");
 
 function changeBanner(){
+  if(!banner) return;
+
   banner.style.opacity = "0";
 
   setTimeout(() => {
@@ -399,10 +385,90 @@ function changeBanner(){
 changeBanner();
 setInterval(changeBanner, 4000);
 
+/* =========================
+   NAVIGATION
+========================= */
 function goCategoryPage(){
   window.location.href = "category/index.html";
 }
+
+function goCart(){
+  window.location.href = "cart.html";
+}
+/* =========================
+   CART UI UPDATE (FIXED)
+========================= */
+function updateCartUI(){
+  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+
+  let total = 0;
+  cart.forEach(item => {
+    total += item.count || 0;
+  });
+
+  const el = document.getElementById("cartCount");
+  if(el){
+    el.innerText = total;
+  }
+}
+
+/* =========================
+   INIT
+========================= */
+document.addEventListener("DOMContentLoaded", () => {
+  updateCartUI();
+});
+
+/* =========================
+   LIVE UPDATES
+========================= */
+window.addEventListener("storage", updateCartUI);
+window.addEventListener("cartUpdated", updateCartUI);
+
+/* backup refresh (optional safety) */
+setInterval(updateCartUI, 1000);
 </script>
+
+<div onclick="goCart()" style="
+  position:fixed;
+  bottom:80px;
+  right:15px;
+  width:55px;
+  height:55px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#00ff99,#00c2ff);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  z-index:999;
+  box-shadow:0 8px 20px rgba(0,255,153,0.3);
+  transition:0.3s;
+">
+
+  <!-- SVG ICON -->
+  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+    <circle cx="9" cy="21" r="1"></circle>
+    <circle cx="20" cy="21" r="1"></circle>
+    <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
+  </svg>
+
+  <span id="cartCount" style="
+    position:absolute;
+    top:-5px;
+    right:-5px;
+    background:#ff3b3b;
+    color:#fff;
+    font-size:12px;
+    width:18px;
+    height:18px;
+    border-radius:50%;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+  ">0</span>
+</div>
 
 </body>
 </html>
