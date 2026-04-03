@@ -387,24 +387,22 @@ body{
 
 <script>
 const app = document.getElementById("app");
-
-/* =========================
-   RESET
-========================= */
 app.innerHTML = "";
 
 /* =========================
    CATEGORY HEADER
 ========================= */
-app.innerHTML += `
-  <div class="section-header">
-    <h2 class="title">Kategoriyalar</h2>
+const header = document.createElement("div");
+header.className = "section-header";
 
-    <div class="see-all" onclick="goCategoryPage()">
-      Barchasini ko‘rish <span>›</span>
-    </div>
+header.innerHTML = `
+  <h2 class="title">Kategoriyalar</h2>
+  <div class="see-all" onclick="goCategoryPage()">
+    Barchasini ko‘rish <span>›</span>
   </div>
 `;
+
+app.appendChild(header);
 
 /* =========================
    CATEGORY SLIDER
@@ -422,7 +420,14 @@ categories.forEach(cat => {
   `;
 
   card.onclick = () => {
-    window.location.href = `category/index.html?id=${cat.id}`;
+    console.log("CATEGORY CLICK:", cat.id);
+
+    if (!cat.id) {
+      alert("ID yo‘q!");
+      return;
+    }
+
+    window.location.href = `/category/index.html?id=${encodeURIComponent(cat.id)}`;
   };
 
   slider.appendChild(card);
@@ -433,23 +438,24 @@ app.appendChild(slider);
 /* =========================
    SHORTS HEADER
 ========================= */
-app.innerHTML += `
-  <div class="section-header">
-    <h2 class="title">Shorts</h2>
+const shortsHeader = document.createElement("div");
+shortsHeader.className = "section-header";
 
-    <div class="see-all" onclick="goShortsPage()">
-      Barchasini ko‘rish <span>›</span>
-    </div>
+shortsHeader.innerHTML = `
+  <h2 class="title">Shorts</h2>
+  <div class="see-all" onclick="goShortsPage()">
+    Barchasini ko‘rish <span>›</span>
   </div>
 `;
 
+app.appendChild(shortsHeader);
+
 /* =========================
-   SHORTS GRID (2 COLUMN, 9:16)
+   SHORTS SLIDER
 ========================= */
 const shortsSlider = document.createElement("div");
 shortsSlider.className = "shorts-slider";
 
-/* demo shorts (o‘zing data.js ga ulaysan) */
 const shorts = [
   {id:1, title:"Short 1", poster:"images/shorts.jpg"},
   {id:2, title:"Short 2", poster:"images/shorts.jpg"},
@@ -478,6 +484,8 @@ app.appendChild(shortsSlider);
 /* =========================
    BANNER
 ========================= */
+const banner = document.getElementById("banner");
+
 const banners = [
   "🔥 Eng sifatli TO'QIMA qoplamalar",
   "🚗 Barcha avtomobillar uchun tayyorlanadi",
@@ -486,10 +494,9 @@ const banners = [
 ];
 
 let i = 0;
-const banner = document.getElementById("banner");
 
-function changeBanner(){
-  if(!banner) return;
+function changeBanner() {
+  if (!banner) return;
 
   banner.style.opacity = "0";
 
@@ -506,41 +513,23 @@ setInterval(changeBanner, 4000);
 /* =========================
    NAVIGATION
 ========================= */
-function goCategoryPage(){
+function goCategoryPage() {
   window.location.href = "category/index.html";
 }
 
-function goShortsPage(){
+function goShortsPage() {
   window.location.href = "shorts.html";
 }
 
-function goCart(){
+function goCart() {
   window.location.href = "cart.html";
 }
 
 /* =========================
-   CART
+   CART (FIXED - ONLY ONCE)
 ========================= */
-function updateCartUI(){
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  let total = 0;
-  cart.forEach(item => total += item.count || 0);
-
-  const el = document.getElementById("cartCount");
-  if(el) el.innerText = total;
-}
-
-document.addEventListener("DOMContentLoaded", updateCartUI);
-window.addEventListener("storage", updateCartUI);
-window.addEventListener("cartUpdated", updateCartUI);
-setInterval(updateCartUI, 1000);
-
-/* =========================
-   CART UI UPDATE (FIXED)
-========================= */
-function updateCartUI(){
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
+function updateCartUI() {
+  const cart = JSON.parse(localStorage.getItem("cart")) || [];
 
   let total = 0;
   cart.forEach(item => {
@@ -548,25 +537,15 @@ function updateCartUI(){
   });
 
   const el = document.getElementById("cartCount");
-  if(el){
-    el.innerText = total;
-  }
+  if (el) el.innerText = total;
 }
 
-/* =========================
-   INIT
-========================= */
-document.addEventListener("DOMContentLoaded", () => {
-  updateCartUI();
-});
+/* INIT */
+document.addEventListener("DOMContentLoaded", updateCartUI);
 
-/* =========================
-   LIVE UPDATES
-========================= */
+/* LIVE UPDATE */
 window.addEventListener("storage", updateCartUI);
 window.addEventListener("cartUpdated", updateCartUI);
-
-/* backup refresh (optional safety) */
 setInterval(updateCartUI, 1000);
 </script>
 
