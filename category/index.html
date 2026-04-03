@@ -384,7 +384,7 @@ renderSlider();
 
 /* 🔥 ID orqali to‘g‘ri scroll */
 const url = new URL(window.location.href);
-const startId = url.searchParams.get("id");
+const startId = decodeURIComponent(url.searchParams.get("id"));
 
 if(startId){
   const index = categories.findIndex(c => c.id === startId);
