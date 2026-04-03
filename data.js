@@ -22,7 +22,7 @@ const BASE_IMAGE = "https://cdn.fastora.uz/kardina/";
 
 const categories = [
   {
-    id: "TOQIMA",
+    id: "toqima",
     name: "TO'QIMA",
     poster: "images/toqima.jpg",
     items: [
@@ -108,8 +108,8 @@ const categories = [
   },
 
   {
-    id: "2024 Padushka",
-    name: "2024_padushka",
+    id: "2024_padushka",
+    name: "2024 Padushka",
     poster: "images/padushka.jpg",
     items: [
 	  {
@@ -200,8 +200,8 @@ const categories = [
     ]
   },
   {
-    id: "Onix",
-    name: "onix",
+    id: "onix",
+    name: "Onix",
     poster: "images/onix.jpg",
     items: [
       {
