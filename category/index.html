@@ -401,6 +401,19 @@ if(startId){
 
       updateSlider();
     }, 100);
+  } else {
+    // 🔥 fallback → 1-category
+    activeIndex = 0;
+
+    setTimeout(() => {
+      document.getElementById(categories[0].id)
+        .scrollIntoView({
+          behavior: "smooth",
+          block: "start"
+        });
+
+      updateSlider();
+    }, 100);
   }
 }
 
