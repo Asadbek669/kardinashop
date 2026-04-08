@@ -213,24 +213,27 @@ body {
   transform: scale(0.96);
 }
 
-/* PLUS TUGMA */
-.plus-btn {
-  width: 52px;
-  height: 52px;
-  background: linear-gradient(135deg, #00ff99, #00c2ff);
-  border: none;
-  border-radius: 16px;
-  font-size: 28px;
-  font-weight: bold;
-  cursor: pointer;
+.plus-btn{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 14px 20px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+  background: linear-gradient(90deg, #00ff99, #00c2ff);
   color: #000;
-  margin-top: 16px;
+  cursor: pointer;
+  z-index: 50;
   transition: 0.2s;
-  box-shadow: 0 2px 10px rgba(0,255,153,0.3);
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
 }
 
-.plus-btn:active {
-  transform: scale(0.94);
+.plus-btn:active{
+  opacity: 0.85;
+  transform: scale(0.98);
 }
 
 /* ADD TO CART BOTTOM BAR */
@@ -554,13 +557,18 @@ function renderPage() {
       
       <div id="modelSlider" class="model-slider" style="display: ${isSimpleProduct ? 'none' : 'flex'}"></div>
       
-      <button id="plusBtn" class="plus-btn" style="display: ${isSimpleProduct ? 'flex' : 'none'}">+</button>
+      
     </div>
     
     <div class="desc-card">
       ${currentItem.desc.replace(/\n/g, '<br>')}
     </div>
-    
+
+	<button id="plusBtn" class="plus-btn"
+	  style="display: ${isSimpleProduct ? 'block' : 'none'}">
+	  Savatga qo‘shish
+	</button>
+
     <div id="addBar" class="add-bar" style="display: none">Savatga qo‘shish</div>
   `;
   
