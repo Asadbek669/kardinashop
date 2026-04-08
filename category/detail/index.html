@@ -2,118 +2,297 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Batafsil KARDINA</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Mahsulot detali</title>
 
 <style>
-body{
-  margin:0;
-  background:#0f0f0f;
-  color:white;
-  font-family:Arial;
+* {
+  box-sizing: border-box;
 }
 
-/* IMAGE */
-img{
-  width:100%;
-  height:250px;
-  object-fit:cover;
+body {
+  margin: 0;
+  background: #0f0f0f;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
-/* FULLSCREEN */
-#fsImg{
-  max-width:95%;
-  max-height:95%;
-  object-fit:contain;
-  transform: scale(2);
+/* FULLSCREEN MODAL */
+#fsModal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.96);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  cursor: pointer;
 }
 
-/* COUNTER */
-.counter{
-  display:flex;
-  align-items:center;
-  background:#1a1a1a;
-  border-radius:10px;
-  overflow:hidden;
+#fsImg {
+  max-width: 95%;
+  max-height: 95%;
+  object-fit: contain;
 }
 
-.counter button{
-  width:40px;
-  height:40px;
-  border:none;
-  background:#111;
-  color:#fff;
-  font-size:18px;
-  cursor:pointer;
+/* ORQAGA TUGMASI */
+.back-btn {
+  position: fixed;
+  top: 12px;
+  left: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 30px;
+  background: rgba(30,30,30,0.8);
+  backdrop-filter: blur(10px);
+  color: white;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  z-index: 100;
+  border: 1px solid rgba(255,255,255,0.1);
+  transition: 0.2s;
 }
 
-.counter span{
-  width:40px;
-  text-align:center;
+.back-btn:hover {
+  background: rgba(50,50,50,0.9);
+}
+
+.back-btn:active {
+  transform: scale(0.96);
 }
 
 /* FLOAT CART */
-.cart{
-  position:fixed;
-  bottom:80px;
-  right:15px;
-  width:55px;
-  height:55px;
-  border-radius:50%;
-  background:#00ff99;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:22px;
-  color:black;
-  cursor:pointer;
-  z-index:999;
+.cart-btn {
+  position: fixed;
+  bottom: 80px;
+  right: 16px;
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00ff99, #00c2ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  box-shadow: 0 4px 15px rgba(0,255,153,0.3);
+  transition: transform 0.2s;
 }
 
-.cart span{
-  position:absolute;
-  top:-5px;
-  right:-5px;
-  background:red;
-  color:#fff;
-  font-size:12px;
-  width:18px;
-  height:18px;
-  border-radius:50%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
+.cart-btn:active {
+  transform: scale(0.94);
+}
+
+.cart-btn span {
+  position: absolute;
+  top: -4px;
+  right: -4px;
+  background: #ff4444;
+  color: white;
+  font-size: 11px;
+  font-weight: bold;
+  min-width: 20px;
+  height: 20px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 5px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+/* ASOSIY KONTENT */
+.poster-container {
+  position: relative;
+  background: #1a1a1a;
+}
+
+#posterImg {
+  width: 100%;
+  height: auto;
+  max-height: 320px;
+  object-fit: cover;
+  display: block;
+}
+
+.fullscreen-icon {
+  position: absolute;
+  bottom: 12px;
+  right: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: white;
+  font-size: 20px;
+  transition: 0.2s;
+}
+
+.fullscreen-icon:active {
+  background: rgba(0,0,0,0.8);
+  transform: scale(0.95);
+}
+
+.info-panel {
+  padding: 16px;
+}
+
+.product-name {
+  margin: 0;
+  font-size: 22px;
+  font-weight: 700;
+  letter-spacing: -0.3px;
+}
+
+.price-box {
+  margin-top: 12px;
+  font-size: 24px;
+  font-weight: 800;
+  background: linear-gradient(90deg, #00ff99, #00c2ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* MODEL SLIDER */
+.model-slider {
+  display: flex;
+  gap: 10px;
+  overflow-x: auto;
+  padding: 8px 0 12px 0;
+  margin-top: 8px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.model-slider::-webkit-scrollbar {
+  height: 3px;
+}
+
+.model-slider::-webkit-scrollbar-track {
+  background: #2a2a2a;
+  border-radius: 10px;
+}
+
+.model-slider::-webkit-scrollbar-thumb {
+  background: #00ff99;
+  border-radius: 10px;
+}
+
+.model-chip {
+  flex: 0 0 auto;
+  padding: 8px 16px;
+  border-radius: 30px;
+  background: #1e1e1e;
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.2s;
+  border: 1px solid #2a2a2a;
+}
+
+.model-chip.active {
+  background: #00ff99;
+  color: #000;
+  border-color: #00ff99;
+}
+
+.model-chip:active {
+  transform: scale(0.96);
+}
+
+/* PLUS TUGMA */
+.plus-btn {
+  width: 52px;
+  height: 52px;
+  background: linear-gradient(135deg, #00ff99, #00c2ff);
+  border: none;
+  border-radius: 16px;
+  font-size: 28px;
+  font-weight: bold;
+  cursor: pointer;
+  color: #000;
+  margin-top: 16px;
+  transition: 0.2s;
+  box-shadow: 0 2px 10px rgba(0,255,153,0.3);
+}
+
+.plus-btn:active {
+  transform: scale(0.94);
+}
+
+/* ADD TO CART BOTTOM BAR */
+.add-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  padding: 14px 20px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 16px;
+  background: linear-gradient(90deg, #00ff99, #00c2ff);
+  color: #000;
+  cursor: pointer;
+  z-index: 50;
+  transition: 0.2s;
+  border-top-left-radius: 20px;
+  border-top-right-radius: 20px;
+}
+
+.add-bar:active {
+  opacity: 0.85;
+  transform: scale(0.98);
+}
+
+/* DESCRIPTION */
+.desc-card {
+  background: #141414;
+  border-radius: 20px;
+  padding: 18px;
+  margin: 16px;
+  color: #c0c0c0;
+  line-height: 1.7;
+  font-size: 14px;
+  border: 1px solid #222;
+  margin-bottom: 100px;
+}
+
+.error-message {
+  text-align: center;
+  margin-top: 100px;
+  color: #888;
+  font-size: 18px;
 }
 </style>
 </head>
-
 <body>
 
-<!-- FULLSCREEN -->
-<div id="fsModal" onclick="closeFullScreen()" style="
-position:fixed;top:0;left:0;width:100%;height:100%;
-background:rgba(0,0,0,0.95);
-display:none;align-items:center;justify-content:center;z-index:9999;">
-  <img id="fsImg">
+<!-- FULLSCREEN MODAL -->
+<div id="fsModal" onclick="closeFullScreen()">
+  <img id="fsImg" alt="">
 </div>
 
-<!-- BACK -->
-<div onclick="history.back()" style="
-position:fixed;top:10px;left:10px;
-display:flex;align-items:center;gap:8px;
-padding:8px 14px;border-radius:12px;
-background:rgba(30,30,30,0.6);
-backdrop-filter:blur(10px);
-color:white;font-size:14px;
-cursor:pointer;z-index:100;">
+<!-- ORQAGA -->
+<div class="back-btn" onclick="history.back()">
   ❮ Orqaga
 </div>
 
-<div id="app"></div>
-
 <!-- FLOAT CART -->
-<div onclick="goCart()" class="cart">
-  <svg xmlns="http://www.w3.org/2000/svg" width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+<div class="cart-btn" onclick="goToCart()">
+  <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
     <circle cx="9" cy="21" r="1"></circle>
     <circle cx="20" cy="21" r="1"></circle>
     <path d="M1 1h4l2.7 13.4a2 2 0 0 0 2 1.6h9.7a2 2 0 0 0 2-1.6L23 6H6"></path>
@@ -121,306 +300,289 @@ cursor:pointer;z-index:100;">
   <span id="cartCount">0</span>
 </div>
 
+<div id="app"></div>
+
 <script src="../../data.js"></script>
 <script>
-const app = document.getElementById("app");
+// ================= GLOBAL =================
+let selectedModel = null;
+let currentCategory = null;
+let currentItem = null;
+let isSimpleProduct = false;
 
-const url = new URL(window.location.href);
-const catId = url.searchParams.get("cat");
-const itemId = url.searchParams.get("id");
+// ================= HELPERS =================
+function formatPriceLocal(value) {
+  if (typeof value === 'number') {
+    return value.toLocaleString('uz-UZ') + " so'm";
+  }
+  return value;
+}
 
-const category = categories.find(c => c.id === catId);
-const item = category?.items.find(i => i.id === itemId);
+function updateCartBadge() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const totalCount = cart.reduce((sum, item) => sum + (item.count || 1), 0);
+  const badge = document.getElementById('cartCount');
+  if (badge) badge.innerText = totalCount;
+}
 
-/* RENDER */
-if(!item){
-  app.innerHTML = `
-    <h2 style="
-      text-align:center;
-      margin-top:100px;
-      color:#aaa;
-    ">
-      Topilmadi
-    </h2>
-  `;
-}else{
-  app.innerHTML = `
+function goToCart() {
+  window.location.href = '../../cart.html';
+}
+
+// ================= PRICE GETTER (data.js dan foydalanadi) =================
+function getProductPrice(item, categoryKey, damasType) {
+  // Agar itemda to'g'ridan to'g'ri price bo'lsa (Onix, Tracker)
+  if (item.price) {
+    return item.price;
+  }
   
-  <!-- TOP SECTION -->
-  <div style="
-    position:fixed;
-    top:0;
-    left:0;
-    width:100%;
-    background:#0f0f0f;
-    z-index:10;
-  ">
-
-    <!-- POSTER -->
-    <div style="position:relative;">
-      <img id="posterImg" src="${item.poster}" style="
-        width:100%;
-        height:220px;
-        object-fit:cover;
-      ">
-
-      <!-- FULLSCREEN -->
-      <div onclick="openFullScreen()" style="
-        position:absolute;
-        bottom:10px;
-        right:10px;
-        width:38px;
-        height:38px;
-        border-radius:10px;
-        background:rgba(0,0,0,0.6);
-        display:flex;
-        align-items:center;
-        justify-content:center;
-        cursor:pointer;
-        color:#fff;
-      ">
-        ⛶
-      </div>
-    </div>
-
-	<!-- INFO -->
-	<div style="padding:12px 15px;">
-
-	  <!-- NAME -->
-	  <h2 style="
-		margin:0;
-		font-size:20px;
-		font-weight:600;
-		color:#fff;
-	  ">
-		${item.name}
-	  </h2>
-
-	  <!-- PRICE + BUTTON ROW -->
-	  <div style="
-		margin-top:12px;
-		display:flex;
-		align-items:center;
-		justify-content:space-between;
-	  ">
-
-		<!-- PRICE -->
-		<div style="
-		  font-size:18px;
-		  font-weight:700;
-		  background:linear-gradient(90deg,#00ff99,#00c2ff);
-		  -webkit-background-clip:text;
-		  -webkit-text-fill-color:transparent;
-		">
-		  ${item.price}
-		</div>
-
-		<!-- PLUS / COUNTER -->
-		<div style="display:flex; align-items:center; gap:10px;">
-
-		  <!-- PLUS BUTTON -->
-		  <button id="plusBtn" onclick="addOne()" style="
-			width:45px;
-			height:45px;
-			background:#00ff99;
-			border:none;
-			border-radius:10px;
-			font-size:22px;
-			cursor:pointer;
-			color:#000;
-			font-weight:bold;
-		  ">
-			+
-		  </button>
-
-		  <!-- COUNTER BOX -->
-		  <div id="counterBox" style="
-			display:none;
-			align-items:center;
-			background:#1a1a1a;
-			border-radius:10px;
-			overflow:hidden;
-		  ">
-
-			<button onclick="changeCount(-1)" style="
-			  width:40px;
-			  height:40px;
-			  background:#111;
-			  color:#fff;
-			  border:none;
-			  font-size:18px;
-			  cursor:pointer;
-			">−</button>
-
-			<span id="countText" style="
-			  width:50px;
-			  text-align:center;
-			  font-size:16px;
-			  color:#fff;
-			">1</span>
-
-			<button onclick="changeCount(1)" style="
-			  width:40px;
-			  height:40px;
-			  background:#111;
-			  color:#fff;
-			  border:none;
-			  font-size:18px;
-			  cursor:pointer;
-			">+</button>
-
-		  </div>
-
-		</div>
-	  </div>
-	</div>
-  </div>
-
-  <!-- CONTENT -->
-  <div style="
-    margin-top:300px;
-    padding:15px;
-  ">
-
-    <div style="
-      background:linear-gradient(145deg,#1a1a1a,#101010);
-      border:1px solid rgba(255,255,255,0.05);
-      border-radius:16px;
-      padding:16px;
-
-      color:#d6d6d6;
-      line-height:1.7;
-      font-size:15px;
-    ">
-      ${item.desc}
-    </div>
-
-  </div>
-
-  <!-- BOTTOM BUTTON -->
-  <div onclick="goCart()" style="
-    position:fixed;
-    bottom:0;
-    left:0;
-    width:100%;
-    padding:15px;
-    text-align:center;
-    font-weight:bold;
-    cursor:pointer;
-    background:linear-gradient(90deg,#00ff99,#00c2ff);
-    color:black;
-    z-index:20;
-  ">
-    Savatchaga o‘tish
-  </div>
-  `;
+  // Damas uchun maxsus
+  if (damasType && DAMAS_PRICES && DAMAS_PRICES[categoryKey]) {
+    const damasPrice = DAMAS_PRICES[categoryKey][damasType];
+    if (damasPrice) {
+      return damasPrice.toLocaleString('uz-UZ') + " so'm";
+    }
+  }
+  
+  // Oddiy narx
+  if (item.basePrice) {
+    return item.basePrice.toLocaleString('uz-UZ') + " so'm";
+  }
+  
+  return "Narx mavjud emas";
 }
 
-/* CART */
-let currentCount = 0;
-
-function addOne(){
-  currentCount = 1;
-
-  plusBtn.style.display="none";
-  counterBox.style.display="flex";
-
-  countText.innerText=currentCount;
-
-  syncCart();
+// ================= RENDER MODELS =================
+function renderModels() {
+  if (isSimpleProduct) return;
+  
+  const slider = document.getElementById('modelSlider');
+  if (!slider) return;
+  
+  const CAR_MODELS = [
+    { key: "cobalt", name: "🚗 COBALT" },
+    { key: "lacetti_m", name: "🚗 LACETTI (MEX)" },
+    { key: "lacetti_a", name: "🚗 GENTRA (AVTO)" },
+    { key: "spark", name: "🚗 SPARK" },
+    { key: "damas_komplekt", name: "🚐 DAMAS Kamplekt", damas: "komplekt" },
+    { key: "damas_2", name: "🚐 DAMAS 2 QATOR", damas: "qator_2" },
+    { key: "damas_1", name: "🚐 DAMAS 1 QATOR", damas: "qator_1" },
+    { key: "nexia1", name: "🚗 NEXIA 1" },
+    { key: "nexia2", name: "🚗 NEXIA 2" },
+    { key: "nexia3", name: "🚗 NEXIA 3" },
+    { key: "matiz", name: "🚗 MATIZ" },
+    { key: "labo", name: "🚚 LABO" }
+  ];
+  
+  slider.innerHTML = CAR_MODELS.map(model => `
+    <div class="model-chip" data-key="${model.key}" data-damas="${model.damas || ''}">
+      ${model.name}
+    </div>
+  `).join('');
+  
+  // Event listenerlar
+  document.querySelectorAll('.model-chip').forEach(chip => {
+    chip.addEventListener('click', () => {
+      selectModel(chip.dataset.key, chip.dataset.damas);
+    });
+  });
 }
 
-function changeCount(val){
-  currentCount += val;
+function selectModel(key, damasType) {
+  selectedModel = { key, damasType: damasType || null };
+  
+  // UI active holat
+  document.querySelectorAll('.model-chip').forEach(chip => {
+    chip.classList.remove('active');
+    if (chip.dataset.key === key) {
+      chip.classList.add('active');
+    }
+  });
+  
+  updatePriceDisplay();
+  
+  // Plus tugmasini yashir, Add barni ko'rsat
+  const plusBtn = document.getElementById('plusBtn');
+  const addBar = document.getElementById('addBar');
+  if (plusBtn) plusBtn.style.display = 'none';
+  if (addBar) addBar.style.display = 'block';
+}
 
-  if(currentCount <= 0){
-    currentCount = 0;
-
-    plusBtn.style.display="block";
-    counterBox.style.display="none";
-
-    removeFromCart();
+function updatePriceDisplay() {
+  const priceEl = document.getElementById('priceEl');
+  if (!priceEl || !currentItem) return;
+  
+  if (!selectedModel) {
+    priceEl.innerText = formatPriceLocal(currentItem.basePrice);
     return;
   }
-
-  countText.innerText = currentCount;
-
-  syncCart();
+  
+  const newPrice = getProductPrice(currentItem, currentCategory?.baseKey, selectedModel.damasType);
+  priceEl.innerText = newPrice;
 }
 
-function syncCart(){
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  let exist = cart.find(i => i.id === item.id);
-
-  if(exist){
-    exist.count = currentCount;
-  }else{
-    cart.push({
-      id: item.id,
-      name: item.name,
-      price: item.price,
-      poster: item.poster,
-      count: currentCount
-    });
+// ================= ADD TO CART =================
+function addToCart() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const priceText = document.getElementById('priceEl')?.innerText || '';
+  let priceNumber = 0;
+  
+  // Narxni raqamga o'tkazish
+  const match = priceText.match(/(\d[\d\s]*)/);
+  if (match) {
+    priceNumber = parseInt(match[0].replace(/\s/g, ''));
   }
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartUI();
-}
-
-function removeFromCart(){
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  cart = cart.filter(i => i.id !== item.id);
-
-  localStorage.setItem("cart", JSON.stringify(cart));
-  updateCartUI();
-}
-
-function updateCartUI(){
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  let total = 0;
-  cart.forEach(i => total += i.count);
-
-  document.getElementById("cartCount").innerText = total;
-}
-
-function initCounter(){
-  let cart = JSON.parse(localStorage.getItem("cart")) || [];
-
-  let exist = cart.find(i => i.id === item.id);
-
-  if(exist){
-    currentCount = exist.count;
-
-    plusBtn.style.display="none";
-    counterBox.style.display="flex";
-    countText.innerText = currentCount;
+  
+  const newItem = {
+    id: currentItem.id,
+    name: currentItem.name,
+    price: priceNumber,
+    priceText: priceText,
+    poster: currentItem.poster,
+    count: 1,
+    addedAt: Date.now()
+  };
+  
+  if (selectedModel) {
+    newItem.model = selectedModel.key;
+    newItem.modelName = document.querySelector('.model-chip.active')?.innerText || selectedModel.key;
+  }
+  
+  cart.push(newItem);
+  localStorage.setItem('cart', JSON.stringify(cart));
+  
+  updateCartBadge();
+  
+  // Tugmani animatsiya qilish
+  const addBar = document.getElementById('addBar');
+  if (addBar) {
+    addBar.style.transform = 'scale(0.98)';
+    addBar.innerText = "✅ Qo'shildi!";
+    setTimeout(() => {
+      addBar.style.transform = '';
+      addBar.innerText = "Savatga qo‘shish";
+    }, 1000);
   }
 }
 
-/* FULLSCREEN */
-function openFullScreen(){
-  fsImg.src = posterImg.src;
-  fsModal.style.display="flex";
+function addOne() {
+  const cart = JSON.parse(localStorage.getItem('cart')) || [];
+  const priceText = document.getElementById('priceEl')?.innerText || '';
+  let priceNumber = 0;
+  
+  const match = priceText.match(/(\d[\d\s]*)/);
+  if (match) {
+    priceNumber = parseInt(match[0].replace(/\s/g, ''));
+  }
+  
+  cart.push({
+    id: currentItem.id,
+    name: currentItem.name,
+    price: priceNumber,
+    priceText: priceText,
+    poster: currentItem.poster,
+    count: 1,
+    addedAt: Date.now()
+  });
+  
+  localStorage.setItem('cart', JSON.stringify(cart));
+  updateCartBadge();
+  
+  // Vizual feedback
+  const btn = document.getElementById('plusBtn');
+  if (btn) {
+    btn.style.transform = 'scale(0.9)';
+    setTimeout(() => btn.style.transform = '', 150);
+  }
 }
 
-function closeFullScreen(){
-  fsModal.style.display="none";
+// ================= FULLSCREEN =================
+function openFullScreen() {
+  const img = document.getElementById('posterImg');
+  const fsImg = document.getElementById('fsImg');
+  if (img && fsImg) {
+    fsImg.src = img.src;
+    document.getElementById('fsModal').style.display = 'flex';
+  }
 }
 
-/* NAV */
-function goCart(){
-  window.location.href = "../../cart.html";
+function closeFullScreen() {
+  document.getElementById('fsModal').style.display = 'none';
 }
 
-/* INIT */
-updateCartUI();
-initCounter();
-window.addEventListener("focus", updateCartUI);
+// ================= RENDER PAGE =================
+function renderPage() {
+  const urlParams = new URLSearchParams(window.location.search);
+  const catId = urlParams.get('cat');
+  const itemId = urlParams.get('id');
+  
+  if (!catId || !itemId || !categories) {
+    document.getElementById('app').innerHTML = '<div class="error-message">❌ Mahsulot topilmadi</div>';
+    return;
+  }
+  
+  currentCategory = categories.find(c => c.id === catId);
+  if (!currentCategory) {
+    document.getElementById('app').innerHTML = '<div class="error-message">❌ Kategoriya topilmadi</div>';
+    return;
+  }
+  
+  currentItem = currentCategory.items.find(i => i.id === itemId);
+  if (!currentItem) {
+    document.getElementById('app').innerHTML = '<div class="error-message">❌ Mahsulot topilmadi</div>';
+    return;
+  }
+  
+  // Simple product (Onix, Tracker) yoki oddiy to'qima/fantan...
+  isSimpleProduct = !currentCategory.baseKey;
+  
+  // HTML ni yaratish
+  const initialPrice = currentItem.price 
+    ? currentItem.price 
+    : (currentItem.basePrice ? currentItem.basePrice.toLocaleString('uz-UZ') + " so'm" : "Narx mavjud emas");
+  
+  document.getElementById('app').innerHTML = `
+    <div class="poster-container">
+      <img id="posterImg" src="${currentItem.poster}" alt="${currentItem.name}">
+      <div class="fullscreen-icon" onclick="openFullScreen()">⛶</div>
+    </div>
+    
+    <div class="info-panel">
+      <h1 class="product-name">${currentItem.name}</h1>
+      
+      <div class="price-box" id="priceEl">${initialPrice}</div>
+      
+      <div id="modelSlider" class="model-slider" style="display: ${isSimpleProduct ? 'none' : 'flex'}"></div>
+      
+      <button id="plusBtn" class="plus-btn" style="display: ${isSimpleProduct ? 'flex' : 'none'}">+</button>
+    </div>
+    
+    <div class="desc-card">
+      ${currentItem.desc.replace(/\n/g, '<br>')}
+    </div>
+    
+    <div id="addBar" class="add-bar" style="display: none">Savatga qo‘shish</div>
+  `;
+  
+  // Event larni bog'lash
+  if (isSimpleProduct) {
+    const plusBtn = document.getElementById('plusBtn');
+    if (plusBtn) plusBtn.onclick = addOne;
+  } else {
+    renderModels();
+    const addBar = document.getElementById('addBar');
+    if (addBar) addBar.onclick = addToCart;
+  }
+  
+  updateCartBadge();
+}
+
+// ================= INIT =================
+renderPage();
+
+// LocalStorage o'zgarishini kuzatish
+window.addEventListener('focus', updateCartBadge);
+window.updateCartBadge = updateCartBadge;
 </script>
-
 </body>
 </html>
