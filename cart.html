@@ -489,58 +489,132 @@ function formatPhone(input) {
 }
 
 // ================= CONFIRM ORDER =================
-function confirmOrder() {
+async function confirmOrder() {
   const phoneInput = document.getElementById('phoneInput');
   let numbers = phoneInput.value.replace(/\D/g, '');
-  
+
   if (numbers.length !== 12) {
-    alert("Telefon raqam noto'g'ri! (+998 XX XXX XX XX)");
+    alert("📞 Telefon raqam noto'g'ri! (+998 XX XXX XX XX)");
     return;
   }
-  
+
   const phone = '+' + numbers;
-  
+
+  if (!cart.length) {
+    alert("🛒 Savatcha bo'sh!");
+    return;
+  }
+
+  // Buyurtma matnini tayyorlash
   let total = 0;
-  let message = "🛒 **YANGI BUYURTMA** 🛒\n\n";
+  let orderText = "🛍 *YANGI BUYURTMA* 🛍\n\n";
+  orderText += "━ ━ ━ ━ ━ ━ ━ ━ ━\n\n";
   
-  cart.forEach(item => {
+  let itemNumber = 1;
+  
+  for (const item of cart) {
+    // Narxni to'g'ri olish
     let priceValue = 0;
     if (typeof item.price === 'number') {
       priceValue = item.price;
     } else if (typeof item.price === 'string') {
       const match = item.price.match(/(\d[\d\s]*)/);
       if (match) priceValue = parseInt(match[0].replace(/\s/g, ''));
-    } else if (item.priceText) {
-      const match = item.priceText.match(/(\d[\d\s]*)/);
-      if (match) priceValue = parseInt(match[0].replace(/\s/g, ''));
+    } else if (item.basePrice) {
+      priceValue = item.basePrice;
     }
     
     const count = item.count || 1;
     const sum = priceValue * count;
     total += sum;
     
-    message += `📦 ${item.name}\n`;
-    if (item.modelName) message += `   🚗 ${item.modelName}\n`;
-    else if (item.model) message += `   🚗 ${item.model.toUpperCase()}\n`;
-    message += `   ${count} x ${formatSum(priceValue)}\n`;
-    message += `   = ${formatSum(sum)}\n\n`;
-  });
+    // Formatlangan narxlar
+    const formattedPrice = priceValue.toLocaleString('uz-UZ') + " so'm";
+    const formattedSum = sum.toLocaleString('uz-UZ') + " so'm";
+    
+    orderText += `📦 *${itemNumber}. ${item.name}*\n`;
+    orderText += `   💰 Narxi: ${formattedPrice}\n`;
+    orderText += `   🔢 Soni: ${count} ta\n`;
+    orderText += `   💵 Jami: ${formattedSum}\n`;
+    orderText += `   🖼 Rasm: ${item.poster}\n\n`;
+    
+    itemNumber++;
+  }
   
-  message += `💰 **Jami:** ${formatSum(total)}\n`;
-  message += `📱 **Telefon:** ${phone}\n\n`;
-  message += `⏰ Vaqt: ${new Date().toLocaleString('uz-UZ')}`;
-  
-  // Telegram orqali yuborish
-  const tgUrl = 'https://t.me/share/url?url=&text=' + encodeURIComponent(message);
-  window.open(tgUrl, '_blank');
-  
-  // Savatchani tozalash
-  localStorage.removeItem('cart');
-  cart = [];
-  renderCart();
-  closeModal();
-}
+  orderText += "━ ━ ━ ━ ━ ━ ━ ━ ━\n\n";
+  orderText += `💰 *UMUMIY SUMMA:* ${total.toLocaleString('uz-UZ')} so'm\n`;
+  orderText += `📱 *Telefon:* ${phone}\n\n`;
+  orderText += "━ ━ ━ ━ ━ ━ ━ ━ ━\n";
+  orderText += "⏳ Yetkazib berish: 2-3 kun\n";
+  orderText += "✅ Buyurtmangiz qabul qilindi!";
 
+  // Telegram bot sozlamalari
+  const BOT_TOKEN = "8782268946:AAEFcwmQNZxd0fefc_eQRTUKd-IqzYuA-AY";
+  const CHAT_ID = "606226674";
+
+  try {
+    // 1. AVVAL RASMLARNI JO'NATAMIZ (media group sifatida)
+    const mediaGroup = [];
+    
+    for (let i = 0; i < cart.length; i++) {
+      const item = cart[i];
+      if (item.poster && item.poster.startsWith('http')) {
+        mediaGroup.push({
+          type: "photo",
+          media: item.poster,
+          caption: i === 0 ? orderText : undefined // Faqat birinchi rasmga matn qo'shamiz
+        });
+      }
+    }
+    
+    // Agar rasm bo'lsa, media group jo'natamiz
+    if (mediaGroup.length > 0) {
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMediaGroup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          media: mediaGroup
+        })
+      });
+    } else {
+      // Rasm bo'lmasa, faqat matn jo'natamiz
+      await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          chat_id: CHAT_ID,
+          text: orderText,
+          parse_mode: "Markdown"
+        })
+      });
+    }
+    
+    // 2. TELEFON RAQAMGA HAM SMS YUBORISH (ixtiyoriy)
+    // Buning uchun backend kerak, hozircha o'tkazib yuboramiz
+    
+    alert("✅ Buyurtma muvaffaqiyatli yuborildi!\n\nOperator siz bilan bog'lanadi.");
+    
+    // Savatchani tozalash
+    localStorage.removeItem('cart');
+    cart = [];
+    renderCart();
+    closeModal();
+    
+    // 3 soniyadan keyin oldingi sahifaga qaytish
+    setTimeout(() => {
+      window.location.href = "../index.html";
+    }, 2000);
+    
+  } catch (err) {
+    console.error("Xatolik:", err);
+    alert("❌ Xatolik yuz berdi. Qayta urinib ko'ring.");
+  }
+}
 // ================= INIT =================
 loadCart();
 renderCart();
