@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Food App</title>
+<title>Katalog Kardina</title>
 
 <style>
 body{
@@ -244,52 +244,61 @@ function renderSlider(){
 
 /* RENDER FEED */
 function renderFeed(){
-  feed.innerHTML="";
+  feed.innerHTML = "";
 
-  categories.forEach(cat=>{
-    const section=document.createElement("div");
-    section.className="section";
-    section.id=cat.id;
+  categories.forEach(cat => {
+    const section = document.createElement("div");
+    section.className = "section";
+    section.id = cat.id;
 
-    section.innerHTML=`
+    section.innerHTML = `
       <div class="section-title">${cat.name}</div>
     `;
 
-    const grid=document.createElement("div");
-    grid.className="grid";
+    const grid = document.createElement("div");
+    grid.className = "grid";
 
-    cat.items.forEach(item=>{
-      const card=document.createElement("div");
-      card.className="card";
+    const hideAddBtn = cat.id !== "onix" && cat.id !== "tracker";
+
+    cat.items.forEach(item => {
+
+      const card = document.createElement("div");
+      card.className = "card";
+
       card.onclick = (e) => {
-        // Agar plus tugmasi bosilgan bo'lsa, kartaga o'tishni oldini olish
-        if(e.target.classList && e.target.classList.contains('add-btn')) return;
+        if (e.target.classList && e.target.classList.contains('add-btn')) return;
         window.location.href = `detail/index.html?cat=${cat.id}&id=${item.id}`;
       };
-      
+
       const itemPrice = getItemPrice(item);
-      
-      card.innerHTML=`
+
+      card.innerHTML = `
         <img src="${item.poster}">
         <div class="info">
           <div style="display:flex; align-items:center; justify-content:space-between;">
             <div class="name">${item.name}</div>
-            <button class="add-btn" onclick="event.stopPropagation(); addToCart(${JSON.stringify(item).replace(/"/g,'&quot;')})" style="
-              width:28px;
-              height:28px;
-              border-radius:6px;
-              background:#00ff99;
-              border:none;
-              font-size:16px;
-              font-weight:bold;
-              cursor:pointer;
-              display:flex;
-              align-items:center;
-              justify-content:center;
-            ">
-              +
-            </button>
+
+            ${!hideAddBtn ? `
+              <button class="add-btn" onclick="event.stopPropagation(); addToCart(${JSON.stringify(item).replace(/"/g,'&quot;')})"
+              style="
+                width:28px;
+                height:28px;
+                border-radius:6px;
+                background:#00ff99;
+                border:none;
+                font-size:16px;
+                font-weight:bold;
+                cursor:pointer;
+                display:flex;
+                align-items:center;
+                justify-content:center;
+              ">
+                +
+              </button>
+            ` : ``}
+
           </div>
+
           <div class="price">${itemPrice}</div>
           <div class="desc">${item.desc || (cat.id === "toqima" ? "To'qima qoplamalar" : "Sifatli qoplamalar")}</div>
         </div>
@@ -302,7 +311,7 @@ function renderFeed(){
     feed.appendChild(section);
   });
 
-  sections=[...document.querySelectorAll(".section")];
+  sections = [...document.querySelectorAll(".section")];
 }
 
 /* ACTIVE CATEGORY DETECT */
