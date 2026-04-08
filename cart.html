@@ -2,534 +2,567 @@
 <html lang="uz">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <title>Savatcha</title>
 
 <style>
-body{
-  margin:0;
-  background:#0f0f0f;
-  color:white;
-  font-family:Arial;
+* {
+  box-sizing: border-box;
 }
 
-/* HEADER */
-.header{
-  padding:15px;
-  font-size:20px;
-  font-weight:bold;
+body {
+  margin: 0;
+  background: #0f0f0f;
+  color: white;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Arial, sans-serif;
 }
 
-/* ITEM */
-.item{
-  display:flex;
-  gap:12px;
-  padding:12px;
-  border-bottom:1px solid #222;
-  align-items:center;
+/* TOPBAR */
+.topbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(20,20,20,0.85);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  z-index: 1000;
 }
 
-.item img{
-  width:65px;
-  height:65px;
-  object-fit:cover;
-  border-radius:10px;
+.back-btn {
+  position: absolute;
+  left: 12px;
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.08);
+  color: white;
+  cursor: pointer;
+  font-size: 20px;
+  transition: 0.2s;
 }
 
-/* INFO */
-.info{
-  flex:1;
+.back-btn:active {
+  background: rgba(255,255,255,0.15);
+  transform: scale(0.95);
 }
 
-.name{
-  font-size:14px;
-  margin-bottom:4px;
+.title {
+  font-size: 17px;
+  font-weight: 600;
 }
 
-.price{
-  font-size:13px;
-  color:#aaa;
+/* CART LIST */
+.cart-list {
+  margin-top: 70px;
+  margin-bottom: 100px;
 }
 
-.sum{
-  color:#00ff99;
-  font-weight:bold;
-  margin-top:4px;
+.empty-cart {
+  text-align: center;
+  margin-top: 120px;
+  color: #666;
+  font-size: 16px;
+}
+
+/* CARD ITEM */
+.cart-item {
+  display: flex;
+  gap: 14px;
+  padding: 14px;
+  border-bottom: 1px solid #222;
+  background: #0f0f0f;
+}
+
+.item-image {
+  width: 70px;
+  height: 70px;
+  border-radius: 12px;
+  object-fit: cover;
+  background: #1a1a1a;
+}
+
+.item-info {
+  flex: 1;
+}
+
+.item-name {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.item-model {
+  font-size: 12px;
+  color: #00ff99;
+  margin-bottom: 4px;
+}
+
+.item-price {
+  font-size: 13px;
+  color: #aaa;
+  margin-bottom: 8px;
 }
 
 /* COUNTER */
-.counter{
-  display:flex;
-  align-items:center;
-  background:#1a1a1a;
-  border-radius:10px;
-  overflow:hidden;
-  margin-top:6px;
+.counter {
+  display: inline-flex;
+  align-items: center;
+  background: #1a1a1a;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-top: 4px;
 }
 
-.counter button{
-  width:32px;
-  height:32px;
-  border:none;
-  background:#111;
-  color:#fff;
-  cursor:pointer;
-  font-size:16px;
+.counter-btn {
+  width: 34px;
+  height: 34px;
+  border: none;
+  background: #111;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.1s;
 }
 
-.counter input{
-  width:45px;
-  text-align:center;
-  border:none;
-  background:#1a1a1a;
-  color:#fff;
-  font-size:15px;
+.counter-btn:active {
+  background: #222;
+  transform: scale(0.95);
 }
 
-/* REMOVE */
-.remove{
-  background:none;
-  border:none;
-  color:#ff4d4d;
-  font-size:18px;
-  cursor:pointer;
+.counter-input {
+  width: 50px;
+  text-align: center;
+  border: none;
+  background: #1a1a1a;
+  color: white;
+  font-size: 15px;
+  font-weight: 500;
+  padding: 8px 0;
 }
 
-/* EMPTY */
-.empty{
-  text-align:center;
-  margin-top:100px;
-  color:#777;
+.counter-input:focus {
+  outline: none;
+}
+
+.item-sum {
+  font-size: 14px;
+  font-weight: 700;
+  color: #00ff99;
+  margin-top: 8px;
+}
+
+.remove-btn {
+  background: none;
+  border: none;
+  color: #ff5555;
+  font-size: 22px;
+  cursor: pointer;
+  padding: 0 8px;
+  transition: 0.1s;
+}
+
+.remove-btn:active {
+  transform: scale(0.9);
+  opacity: 0.7;
 }
 
 /* BOTTOM BAR */
-.bottom{
+.bottom-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  padding: 12px;
-  background: rgba(15,15,15,0.9);
-  backdrop-filter: blur(10px);
+  padding: 14px 18px;
+  background: rgba(15,15,15,0.95);
+  backdrop-filter: blur(12px);
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-top: 1px solid #222;
+  z-index: 100;
 }
 
-.total{
-  font-size: 14px;
-  color: #fff;
+.total-price {
+  font-size: 16px;
+  font-weight: 600;
+  color: white;
 }
 
-.send{
-  padding: 12px 18px;
-  border-radius: 12px;
-  font-weight: bold;
+.total-price span {
+  color: #00ff99;
+  font-size: 18px;
+}
+
+.send-btn {
+  padding: 12px 22px;
+  border-radius: 30px;
+  font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-  color: #000;
-
-  /* 🔥 CHIROYLI GRADIENT */
   background: linear-gradient(135deg, #00ff99, #00c2ff);
-
-  /* SOYA */
-  box-shadow: 0 8px 20px rgba(0,255,153,0.25);
-
-  transition: 0.3s ease;
+  color: #000;
+  border: none;
+  transition: 0.2s;
+  box-shadow: 0 4px 12px rgba(0,255,153,0.25);
 }
 
-/* HOVER EFFECT */
-.send:hover{
-  transform: scale(1.05);
-  box-shadow: 0 10px 25px rgba(0,255,153,0.4);
+.send-btn:active {
+  transform: scale(0.96);
 }
 
-/* CLICK EFFECT */
-.send:active{
-  transform: scale(0.95);
+/* MODAL */
+.modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
 }
 
-/* TOP GLASS HEADER */
-.topbar{
-  position:fixed;
-  top:0;
-  left:0;
-  width:100%;
-  height:60px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:rgba(20,20,20,0.6);
-  backdrop-filter:blur(12px);
-  -webkit-backdrop-filter:blur(12px);
-
-  border-bottom:1px solid rgba(255,255,255,0.05);
-  z-index:1000;
+.modal-content {
+  width: 90%;
+  max-width: 330px;
+  background: #1a1a1a;
+  padding: 24px 20px;
+  border-radius: 24px;
+  border: 1px solid #333;
+  text-align: center;
 }
 
-/* TITLE */
-.title{
-  font-size:17px;
-  font-weight:600;
-  color:#fff;
+.modal-title {
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-size: 18px;
+  font-weight: 600;
 }
 
-/* BACK BUTTON */
-.back-btn{
-  position:absolute;
-  left:12px;
-
-  width:36px;
-  height:36px;
-  border-radius:10px;
-
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  background:rgba(255,255,255,0.08);
-  color:#fff;
-  cursor:pointer;
-  transition:0.2s;
+.phone-input {
+  width: 100%;
+  height: 48px;
+  padding: 0 14px;
+  border-radius: 14px;
+  border: none;
+  outline: none;
+  background: #111;
+  color: white;
+  font-size: 16px;
+  margin-bottom: 18px;
+  text-align: center;
+  letter-spacing: 0.5px;
 }
 
-.back-btn:hover{
-  background:rgba(255,255,255,0.15);
+.confirm-btn {
+  width: 100%;
+  padding: 14px;
+  border: none;
+  border-radius: 14px;
+  background: linear-gradient(90deg, #00ff99, #00c2ff);
+  color: #000;
+  font-weight: 700;
+  font-size: 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  transition: 0.2s;
 }
 
-#cartList{
-  margin-top:70px;   /* 👈 topbar balandligi */
-  margin-bottom:100px; /* pastdagi bar uchun */
-}
-.empty{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:center;
-  padding:40px 20px;
-  text-align:center;
-  color:#aaa;
+.confirm-btn:active {
+  transform: scale(0.97);
 }
 
-.empty-icon{
-  margin-bottom:10px;
-  opacity:0.9;
+.cancel-modal {
+  margin-top: 12px;
+  color: #888;
+  font-size: 13px;
+  cursor: pointer;
+  display: inline-block;
+  padding: 6px 12px;
 }
 
-.empty-icon svg{
-  width:90px;
-  height:90px;
+.cancel-modal:active {
+  color: #aaa;
 }
-
-.empty-text{
-  font-size:16px;
-  font-weight:600;
-  color:#bbb;
-}
-	
 </style>
 </head>
-
 <body>
 
 <div class="topbar">
-  <div onclick="history.back()" class="back-btn">
-    ❮
-  </div>
-
-  <div class="title">
-    Savatcha
-  </div>
+  <div class="back-btn" onclick="history.back()">❮</div>
+  <div class="title">Savatcha</div>
 </div>
 
-<div id="cartList"></div>
+<div id="cartList" class="cart-list"></div>
 
-<div class="bottom">
-  <div class="total" id="totalPrice">0 so'm</div>
-  <div class="send" onclick="sendAll()">Buyurtmani yuborish</div>
+<div class="bottom-bar">
+  <div class="total-price">Jami: <span id="totalPrice">0 so'm</span></div>
+  <button class="send-btn" onclick="showPhoneModal()">Buyurtma berish</button>
 </div>
 
-<div id="phoneModal" style="
-  position:fixed;
-  top:0; left:0;
-  width:100%; height:100%;
-  background:rgba(0,0,0,0.6);
-  display:none;
-  align-items:center;
-  justify-content:center;
-  z-index:9999;
-">
-  <div style="
-    width:90%;
-    max-width:320px;
-    background:#1a1a1a;
-    padding:20px;
-    border-radius:14px;
-    border:1px solid #333;
-    text-align:center;
-  ">
-
-	<h3 style="margin-bottom:10px; display:flex; align-items:center; justify-content:center; gap:8px;">
-	  
-	  <!-- PHONE SVG ICON -->
-	  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#00ff99" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-		<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.86.33 1.7.61 2.5a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.58-1.13a2 2 0 0 1 2.11-.45c.8.28 1.64.49 2.5.61A2 2 0 0 1 22 16.92z"/>
-	  </svg>
-
-	  Telefon raqam
-	</h3>
-
-	<input id="phoneInput" type="tel" value="+998 " placeholder="+998 90 123 45 67" style="
-	  width:100%;
-	  height:44px;
-	  box-sizing:border-box;
-
-	  padding:12px;
-	  border-radius:10px;
-	  border:none;
-	  outline:none;
-	  background:#111;
-	  color:#fff;
-	  margin-bottom:15px;
-	  font-size:14px;
-	">
-
-	<button onclick="confirmSend()" style="
-	  width:100%;
-	  padding:12px;
-	  border:none;
-	  border-radius:10px;
-	  background:linear-gradient(90deg,#00ff99,#00c2ff);
-	  color:#000;
-	  font-weight:bold;
-	  cursor:pointer;
-	  font-size:14px;
-	  display:flex;
-	  align-items:center;
-	  justify-content:center;
-	  gap:8px;
-	">
-	  
-	  <!-- SEND SVG ICON -->
-	  <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-		<line x1="22" y1="2" x2="11" y2="13"></line>
-		<polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-	  </svg>
-
-	  YUBORISH
-	</button>
-
-    <div onclick="closeModal()" style="
-      margin-top:10px;
-      color:#888;
-      font-size:12px;
-      cursor:pointer;
-    ">
-      Bekor qilish
-    </div>
-
-  </div>
-</div>
-<script>
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-const list = document.getElementById("cartList");
-
-/* RENDER */
-function renderCart(){
-  list.innerHTML = "";
-  let total = 0;
-
-  if(cart.length === 0){
-    list.innerHTML = `
-  <div class="empty">
-    <div class="empty-icon">
-      <svg width="90" height="90" viewBox="0 0 24 24" fill="none"
-        xmlns="http://www.w3.org/2000/svg">
-        <path d="M6 6h15l-1.5 9h-12L6 6z" stroke="white" stroke-width="1.5"/>
-        <path d="M6 6L5 3H2" stroke="white" stroke-width="1.5"/>
-        <circle cx="9" cy="20" r="1" fill="white"/>
-        <circle cx="18" cy="20" r="1" fill="white"/>
+<!-- MODAL -->
+<div id="phoneModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-title">
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00ff99" stroke-width="2">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.8 19.8 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.08 4.18 2 2 0 0 1 4.06 2h3a2 2 0 0 1 2 1.72c.12.86.33 1.7.61 2.5a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.58-1.13a2 2 0 0 1 2.11-.45c.8.28 1.64.49 2.5.61A2 2 0 0 1 22 16.92z"/>
       </svg>
+      Telefon raqam
     </div>
-
-    <div class="empty-text">Savatcha bo‘sh</div>
+    
+    <input id="phoneInput" class="phone-input" type="tel" placeholder="+998 __ ___ __ __" value="+998 ">
+    
+    <button class="confirm-btn" onclick="confirmOrder()">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="black" stroke-width="2">
+        <line x1="22" y1="2" x2="11" y2="13"></line>
+        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+      </svg>
+      YUBORISH
+    </button>
+    
+    <div class="cancel-modal" onclick="closeModal()">Bekor qilish</div>
   </div>
-`;
-    document.getElementById("totalPrice").innerText = "0 so'm";
+</div>
+
+<script src="data.js"></script>
+<script>
+// ================= GLOBAL =================
+let cart = [];
+
+// ================= HELPERS =================
+function loadCart() {
+  cart = JSON.parse(localStorage.getItem('cart')) || [];
+}
+
+function saveCart() {
+  localStorage.setItem('cart', JSON.stringify(cart));
+}
+
+function formatSum(value) {
+  return value.toLocaleString('uz-UZ') + " so'm";
+}
+
+// ================= RENDER =================
+function renderCart() {
+  const container = document.getElementById('cartList');
+  const totalSpan = document.getElementById('totalPrice');
+  
+  if (!cart.length) {
+    container.innerHTML = '<div class="empty-cart">🛒 Savatcha bo‘sh</div>';
+    if (totalSpan) totalSpan.innerText = '0 so\'m';
     return;
   }
-
-  cart.forEach(item=>{
-    const price = parseInt(item.price.replace(/\D/g,""));
-    const sum = price * item.count;
+  
+  let total = 0;
+  let html = '';
+  
+  cart.forEach((item, index) => {
+    // Price ni to'g'ri olish (number yoki string bo'lishi mumkin)
+    let priceValue = 0;
+    if (typeof item.price === 'number') {
+      priceValue = item.price;
+    } else if (typeof item.price === 'string') {
+      const match = item.price.match(/(\d[\d\s]*)/);
+      if (match) priceValue = parseInt(match[0].replace(/\s/g, ''));
+    } else if (item.priceText) {
+      const match = item.priceText.match(/(\d[\d\s]*)/);
+      if (match) priceValue = parseInt(match[0].replace(/\s/g, ''));
+    }
+    
+    const count = item.count || 1;
+    const sum = priceValue * count;
     total += sum;
-
-    list.innerHTML += `
-      <div class="item">
-        <img src="${item.poster}">
+    
+    const priceDisplay = item.priceText || formatSum(priceValue);
+    const modelHtml = item.modelName 
+      ? `<div class="item-model">${item.modelName}</div>`
+      : (item.model ? `<div class="item-model">🚗 ${item.model.toUpperCase()}</div>` : '');
+    
+    html += `
+      <div class="cart-item" data-index="${index}">
+        <img class="item-image" src="${item.poster}" onerror="this.src='https://placehold.co/70x70?text=No+Image'">
         
-        <div class="info">
-          <div class="name">${item.name}</div>
-          <div class="price">${item.price}</div>
-
+        <div class="item-info">
+          <div class="item-name">${escapeHtml(item.name)}</div>
+          ${modelHtml}
+          <div class="item-price">${priceDisplay}</div>
+          
           <div class="counter">
-            <button onclick="changeCount('${item.id}', -1)">−</button>
-            <input 
-			  type="number"
-			  min="1"
-			  value="${item.count}"
-			  oninput="inputChange('${item.id}', this.value)"
-			>
-            <button onclick="changeCount('${item.id}', 1)">+</button>
+            <button class="counter-btn" onclick="changeCount(${index}, -1)">−</button>
+            <input class="counter-input" type="number" min="1" value="${count}" onchange="setCount(${index}, this.value)">
+            <button class="counter-btn" onclick="changeCount(${index}, 1)">+</button>
           </div>
-
-          <div class="sum">${sum.toLocaleString()} so'm</div>
+          
+          <div class="item-sum">${formatSum(sum)}</div>
         </div>
-
-		<button class="remove" onclick="removeItem('${item.id}')">
-		  <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#ff4d4d" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-
-			<!-- lid -->
-			<polyline points="3 6 5 6 21 6"></polyline>
-
-			<!-- top -->
-			<path d="M8 6V4h8v2"></path>
-
-			<!-- body -->
-			<path d="M19 6l-1 14a2 2 0 0 1-2 2H8
-					 a2 2 0 0 1-2-2L5 6"></path>
-
-			<!-- inner lines -->
-			<line x1="10" y1="11" x2="10" y2="17"></line>
-			<line x1="14" y1="11" x2="14" y2="17"></line>
-
-		  </svg>
-		</button>
+        
+        <button class="remove-btn" onclick="removeItem(${index})">🗑</button>
       </div>
     `;
   });
-
-  document.getElementById("totalPrice").innerText =
-    "Jami: " + total.toLocaleString() + " so'm";
+  
+  container.innerHTML = html;
+  if (totalSpan) totalSpan.innerText = formatSum(total);
 }
 
-/* CHANGE COUNT */
-function changeCount(id, val){
-  const item = cart.find(i => i.id === id);
-  if(!item) return;
+function escapeHtml(str) {
+  if (!str) return '';
+  return str.replace(/[&<>]/g, function(m) {
+    if (m === '&') return '&amp;';
+    if (m === '<') return '&lt;';
+    if (m === '>') return '&gt;';
+    return m;
+  });
+}
 
-  item.count += val;
-  if(item.count < 1) item.count = 1;
-
+// ================= CART ACTIONS =================
+function changeCount(index, delta) {
+  if (!cart[index]) return;
+  const newCount = (cart[index].count || 1) + delta;
+  if (newCount < 1) return;
+  cart[index].count = newCount;
   saveCart();
-}
-
-/* INPUT CHANGE */
-function inputChange(id, value){
-  const item = cart.find(i => i.id === id);
-  if(!item) return;
-
-  let val = parseInt(value);
-  if(isNaN(val) || val < 1) val = 1;
-
-  item.count = val;
-  saveCart();
-}
-
-/* REMOVE */
-function removeItem(id){
-  cart = cart.filter(i => i.id !== id);
-  saveCart();
-}
-
-/* SAVE */
-function saveCart(){
-  localStorage.setItem("cart", JSON.stringify(cart));
   renderCart();
 }
 
-/* SEND */
-function sendAll(){
-  if(cart.length === 0){
-    alert("Savatcha bo‘sh");
-    return;
-  }
-
-  document.getElementById("phoneModal").style.display = "flex";
+function setCount(index, value) {
+  if (!cart[index]) return;
+  let newCount = parseInt(value);
+  if (isNaN(newCount) || newCount < 1) newCount = 1;
+  cart[index].count = newCount;
+  saveCart();
+  renderCart();
 }
 
-const phoneInput = document.getElementById("phoneInput");
+function removeItem(index) {
+  cart.splice(index, 1);
+  saveCart();
+  renderCart();
+}
 
-// +998 doim qoladi
-phoneInput.addEventListener("input", function () {
-  let value = phoneInput.value;
-
-  // faqat raqamlarni olish
-  let numbers = value.replace(/\D/g, "");
-
-  // 998 ni majburlash
-  if (!numbers.startsWith("998")) {
-    numbers = "998";
+// ================= MODAL =================
+function showPhoneModal() {
+  if (!cart.length) {
+    alert("Savatcha bo'sh!");
+    return;
   }
+  document.getElementById('phoneModal').style.display = 'flex';
+}
 
-  // 998 dan keyin faqat 9 ta raqam
+function closeModal() {
+  document.getElementById('phoneModal').style.display = 'none';
+  const phoneInput = document.getElementById('phoneInput');
+  if (phoneInput) phoneInput.value = '+998 ';
+}
+
+// Telefon formatlash
+function formatPhone(input) {
+  let numbers = input.value.replace(/\D/g, '');
+  if (!numbers.startsWith('998')) numbers = '998';
   numbers = numbers.slice(0, 12);
-
-  // formatlash
-  let formatted = "+998 ";
-
+  
+  let formatted = '+998 ';
   if (numbers.length > 3) formatted += numbers.slice(3, 5);
-  if (numbers.length > 5) formatted += " " + numbers.slice(5, 8);
-  if (numbers.length > 8) formatted += " " + numbers.slice(8, 10);
-  if (numbers.length > 10) formatted += " " + numbers.slice(10, 12);
-
-  phoneInput.value = formatted;
-});
-
-window.closeModal = function(){
-  document.getElementById("phoneModal").style.display = "none";
-  document.getElementById("phoneInput").value = "+998 ";
+  if (numbers.length > 5) formatted += ' ' + numbers.slice(5, 8);
+  if (numbers.length > 8) formatted += ' ' + numbers.slice(8, 10);
+  if (numbers.length > 10) formatted += ' ' + numbers.slice(10, 12);
+  
+  input.value = formatted;
 }
 
-window.confirmSend = function(){
-  let phoneRaw = document.getElementById("phoneInput").value;
-  let numbers = phoneRaw.replace(/\D/g,"");
-
-  if(numbers.length !== 12 || !numbers.startsWith("998")){
-    alert("Telefon noto‘g‘ri! +998 bilan 9 ta raqam kiriting");
+// ================= CONFIRM ORDER =================
+function confirmOrder() {
+  const phoneInput = document.getElementById('phoneInput');
+  let numbers = phoneInput.value.replace(/\D/g, '');
+  
+  if (numbers.length !== 12) {
+    alert("Telefon raqam noto'g'ri! (+998 XX XXX XX XX)");
     return;
   }
-
-  let phone = "+" + numbers; // 🔥 ENG MUHIM QATOR
-
-  let text = "🛒 YANGI BUYURTMA:\n\n";
+  
+  const phone = '+' + numbers;
+  
   let total = 0;
-
-  cart.forEach(i=>{
-    const price = parseInt(i.price.replace(/\D/g,""));
-    const sum = price * i.count;
+  let message = "🛒 **YANGI BUYURTMA** 🛒\n\n";
+  
+  cart.forEach(item => {
+    let priceValue = 0;
+    if (typeof item.price === 'number') {
+      priceValue = item.price;
+    } else if (typeof item.price === 'string') {
+      const match = item.price.match(/(\d[\d\s]*)/);
+      if (match) priceValue = parseInt(match[0].replace(/\s/g, ''));
+    } else if (item.priceText) {
+      const match = item.priceText.match(/(\d[\d\s]*)/);
+      if (match) priceValue = parseInt(match[0].replace(/\s/g, ''));
+    }
+    
+    const count = item.count || 1;
+    const sum = priceValue * count;
     total += sum;
-
-    text += `📦 ${i.name}\n`;
-    text += `📸 ${i.poster}\n`;
-    text += `   ${i.count} x ${i.price}\n`;
-    text += `   = ${sum.toLocaleString()} so'm\n\n`;
+    
+    message += `📦 ${item.name}\n`;
+    if (item.modelName) message += `   🚗 ${item.modelName}\n`;
+    else if (item.model) message += `   🚗 ${item.model.toUpperCase()}\n`;
+    message += `   ${count} x ${formatSum(priceValue)}\n`;
+    message += `   = ${formatSum(sum)}\n\n`;
   });
-
-  text += `💰 Jami: ${total.toLocaleString()} so'm\n`;
-  text += `📱 Telefon: ${phone}`;
-
-  const url = `https://t.me/U2BEK_712?text=${encodeURIComponent(text)}`;
-  window.open(url, "_blank");
-
+  
+  message += `💰 **Jami:** ${formatSum(total)}\n`;
+  message += `📱 **Telefon:** ${phone}\n\n`;
+  message += `⏰ Vaqt: ${new Date().toLocaleString('uz-UZ')}`;
+  
+  // Telegram orqali yuborish
+  const tgUrl = 'https://t.me/share/url?url=&text=' + encodeURIComponent(message);
+  window.open(tgUrl, '_blank');
+  
+  // Savatchani tozalash
+  localStorage.removeItem('cart');
+  cart = [];
+  renderCart();
   closeModal();
 }
 
+// ================= INIT =================
+loadCart();
 renderCart();
-</script>
 
+// Input formatting
+const phoneInput = document.getElementById('phoneInput');
+if (phoneInput) {
+  phoneInput.addEventListener('input', function() { formatPhone(this); });
+}
+
+// LocalStorage o'zgarishini kuzatish
+window.addEventListener('storage', function(e) {
+  if (e.key === 'cart') {
+    loadCart();
+    renderCart();
+  }
+});
+
+window.addEventListener('focus', function() {
+  loadCart();
+  renderCart();
+});
+</script>
 </body>
 </html>
