@@ -361,6 +361,7 @@ function formatSum(value) {
 }
 
 // ================= RENDER =================
+// ================= RENDER (TUZATILDI) =================
 function renderCart() {
   const container = document.getElementById('cartList');
   const totalSpan = document.getElementById('totalPrice');
@@ -375,7 +376,6 @@ function renderCart() {
   let html = '';
   
   cart.forEach((item, index) => {
-    // Price ni to'g'ri olish (number yoki string bo'lishi mumkin)
     let priceValue = 0;
     if (typeof item.price === 'number') {
       priceValue = item.price;
@@ -392,9 +392,16 @@ function renderCart() {
     total += sum;
     
     const priceDisplay = item.priceText || formatSum(priceValue);
-    const modelHtml = item.modelName 
-      ? `<div class="item-model">${item.modelName}</div>`
-      : (item.model ? `<div class="item-model">🚗 ${item.model.toUpperCase()}</div>` : '');
+    
+    // MASHINA MARKASI - ENDI TO'G'RI KO'RINADI
+    let modelHtml = '';
+    if (item.modelName) {
+      modelHtml = `<div class="item-model">🚗 ${item.modelName}</div>`;
+    } else if (item.carModel) {
+      modelHtml = `<div class="item-model">🚗 ${item.carModel}</div>`;
+    } else if (item.model) {
+      modelHtml = `<div class="item-model">🚗 ${item.model.toUpperCase()}</div>`;
+    }
     
     html += `
       <div class="cart-item" data-index="${index}">
@@ -489,6 +496,7 @@ function formatPhone(input) {
 }
 
 // ================= CONFIRM ORDER =================
+// ================= CONFIRM ORDER (TUZATILDI) =================
 async function confirmOrder() {
   const phoneInput = document.getElementById('phoneInput');
   let numbers = phoneInput.value.replace(/\D/g, '');
@@ -505,7 +513,6 @@ async function confirmOrder() {
     return;
   }
 
-  // Buyurtma matnini tayyorlash
   let total = 0;
   let orderText = "🛍 *YANGI BUYURTMA* 🛍\n\n";
   orderText += "━ ━ ━ ━ ━ ━ ━ ━ ━\n\n";
@@ -513,7 +520,6 @@ async function confirmOrder() {
   let itemNumber = 1;
   
   for (const item of cart) {
-    // Narxni to'g'ri olish
     let priceValue = 0;
     if (typeof item.price === 'number') {
       priceValue = item.price;
@@ -528,11 +534,18 @@ async function confirmOrder() {
     const sum = priceValue * count;
     total += sum;
     
-    // Formatlangan narxlar
     const formattedPrice = priceValue.toLocaleString('uz-UZ') + " so'm";
     const formattedSum = sum.toLocaleString('uz-UZ') + " so'm";
     
     orderText += `📦 *${itemNumber}. ${item.name}*\n`;
+    
+    // MASHINA MARKASI QO'SHILDI
+    if (item.modelName) {
+      orderText += `   🚗 Mashina: ${item.modelName}\n`;
+    } else if (item.carModel) {
+      orderText += `   🚗 Mashina: ${item.carModel}\n`;
+    }
+    
     orderText += `   💰 Narxi: ${formattedPrice}\n`;
     orderText += `   🔢 Soni: ${count} ta\n`;
     orderText += `   💵 Jami: ${formattedSum}\n`;
@@ -547,12 +560,10 @@ async function confirmOrder() {
   orderText += "━ ━ ━ ━ ━ ━ ━ ━ ━\n";
   orderText += "✅ Buyurtma qabul qilindi!";
 
-  // Telegram bot sozlamalari
   const BOT_TOKEN = "8782268946:AAEFcwmQNZxd0fefc_eQRTUKd-IqzYuA-AY";
   const CHAT_ID = "-1003703851469";
 
   try {
-    // 1. AVVAL RASMLARNI JO'NATAMIZ (media group sifatida)
     const mediaGroup = [];
     
     for (let i = 0; i < cart.length; i++) {
@@ -561,12 +572,11 @@ async function confirmOrder() {
         mediaGroup.push({
           type: "photo",
           media: item.poster,
-          caption: i === 0 ? orderText : undefined // Faqat birinchi rasmga matn qo'shamiz
+          caption: i === 0 ? orderText : undefined
         });
       }
     }
     
-    // Agar rasm bo'lsa, media group jo'natamiz
     if (mediaGroup.length > 0) {
       await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMediaGroup`, {
         method: "POST",
@@ -579,7 +589,6 @@ async function confirmOrder() {
         })
       });
     } else {
-      // Rasm bo'lmasa, faqat matn jo'natamiz
       await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
         method: "POST",
         headers: {
@@ -593,18 +602,13 @@ async function confirmOrder() {
       });
     }
     
-    // 2. TELEFON RAQAMGA HAM SMS YUBORISH (ixtiyoriy)
-    // Buning uchun backend kerak, hozircha o'tkazib yuboramiz
-    
     alert("✅ Buyurtma muvaffaqiyatli yuborildi!\n\nOperator siz bilan bog'lanadi.");
     
-    // Savatchani tozalash
     localStorage.removeItem('cart');
     cart = [];
     renderCart();
     closeModal();
     
-    // 3 soniyadan keyin oldingi sahifaga qaytish
     setTimeout(() => {
       window.location.href = "../index.html";
     }, 2000);
