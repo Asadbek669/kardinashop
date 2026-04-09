@@ -8,7 +8,7 @@
 
 <!-- SEO -->
 <meta name="description" content="Kardina Shop – avtomobillar uchun sifatli TO'QIMA qoplamalar. Cobalt, Gentra, Nexia, Spark va boshqa modellar uchun buyurtma asosida tayyorlanadi.">
-<meta name="keywords" content="kardina shop, avtomobil qoplama, chexol, cobalt chexol, gentra chexol, nexia salon, spark chexol">
+<meta name="keywords" content="kardina shop, avtomobil qoplama, chexol, cobalt chexol, gentra chexol, nexia salon, spark chexol, damas chexol">
 <meta name="author" content="Kardina Shop">
 <meta name="robots" content="index, follow">
 
@@ -18,32 +18,62 @@
 <!-- FAVICON -->
 <link rel="icon" type="image/png" href="https://cdn.fastora.uz/kardina/logo.png">
 
-<!-- OPEN GRAPH -->
+<!-- THEME COLOR -->
+<meta name="theme-color" content="#0f0f0f">
+
+<!-- OPEN GRAPH (Telegram / WhatsApp / Facebook) -->
 <meta property="og:title" content="Kardina Shop | Sifatli avtomobil qoplamalari">
-<meta property="og:description" content="🚗 Kardina Shop – Cobalt, Gentra, Nexia va boshqa avtomobillar uchun sifatli qoplamalar.">
+<meta property="og:description" content="🚗 Cobalt, Gentra, Nexia va boshqa avtomobillar uchun sifatli TO'QIMA qoplamalar">
 <meta property="og:image" content="https://cdn.fastora.uz/kardina/logo.png">
 <meta property="og:url" content="https://kardina.fastora.uz">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="uz_UZ">
 <meta property="og:site_name" content="Kardina Shop">
 
-<!-- TWITTER -->
+<!-- TWITTER CARD -->
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Kardina Shop | Avtomobil qoplamalari">
 <meta name="twitter:description" content="Sifatli va bardoshli avtomobil qoplamalari. Buyurtma asosida tayyorlanadi.">
 <meta name="twitter:image" content="https://cdn.fastora.uz/kardina/logo.png">
 
-<!-- THEME COLOR -->
-<meta name="theme-color" content="#0f0f0f">
-
-<!-- GOOGLE ANALYTICS -->
+<!-- =========================
+     GOOGLE ANALYTICS (GA4)
+========================= -->
 <script async src="https://www.googletagmanager.com/gtag/js?id=G-HRGEQV5WP6"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
+
   gtag('js', new Date());
 
-  gtag('config', 'G-HRGEQV5WP6');
+  gtag('config', 'G-HRGEQV5WP6', {
+    'send_page_view': true
+  });
+</script>
+
+<!-- =========================
+     GOOGLE SITE NAME FIX (MUHIM!)
+     "Fastora" o‘rniga "Kardina Shop" chiqishi uchun
+========================= -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "name": "Kardina Shop",
+  "alternateName": "Kardina",
+  "url": "https://kardina.fastora.uz"
+}
+</script>
+
+<!-- ORGANIZATION (BRAND SIGNAL) -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Kardina Shop",
+  "url": "https://kardina.fastora.uz",
+  "logo": "https://cdn.fastora.uz/kardina/logo.png"
+}
 </script>
 
 <style>
