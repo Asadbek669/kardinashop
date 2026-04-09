@@ -41,19 +41,19 @@ const BASE_PRICE = {
 ============================== */
 const DAMAS_PRICES = {
   toqima: {
-    komplekt: 750000,
+    komplekt: 1000000,
     qator_2: 700000,
-    qator_1: 650000,
+    qator_1: 700000,
   },
   fantan: {
-    komplekt: 400000,
-    qator_2: 360000,
-    qator_1: 320000,
+    komplekt: 380000,
+    qator_2: 320000,
+    qator_1: 200000,
   },
   padushka: {
-    komplekt: 420000,
-    qator_2: 380000,
-    qator_1: 330000,
+    komplekt: 400000,
+    qator_2: 320000,
+    qator_1: 220000,
   },
   shatlanka: {
     komplekt: 600000,
