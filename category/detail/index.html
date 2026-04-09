@@ -332,14 +332,12 @@ function goToCart() {
   window.location.href = '../../cart.html';
 }
 
-// ================= PRICE GETTER (data.js dan foydalanadi) =================
+// ================= PRICE GETTER =================
 function getProductPrice(item, categoryKey, damasType) {
-  // Agar itemda to'g'ridan to'g'ri price bo'lsa (Onix, Tracker)
   if (item.price) {
     return item.price;
   }
   
-  // Damas uchun maxsus
   if (damasType && DAMAS_PRICES && DAMAS_PRICES[categoryKey]) {
     const damasPrice = DAMAS_PRICES[categoryKey][damasType];
     if (damasPrice) {
@@ -347,7 +345,6 @@ function getProductPrice(item, categoryKey, damasType) {
     }
   }
   
-  // Oddiy narx
   if (item.basePrice) {
     return item.basePrice.toLocaleString('uz-UZ') + " so'm";
   }
@@ -378,23 +375,21 @@ function renderModels() {
   ];
   
   slider.innerHTML = CAR_MODELS.map(model => `
-    <div class="model-chip" data-key="${model.key}" data-damas="${model.damas || ''}">
+    <div class="model-chip" data-key="${model.key}" data-damas="${model.damas || ''}" data-name="${model.name}">
       ${model.name}
     </div>
   `).join('');
   
-  // Event listenerlar
   document.querySelectorAll('.model-chip').forEach(chip => {
     chip.addEventListener('click', () => {
-      selectModel(chip.dataset.key, chip.dataset.damas);
+      selectModel(chip.dataset.key, chip.dataset.damas, chip.dataset.name);
     });
   });
 }
 
-function selectModel(key, damasType) {
-  selectedModel = { key, damasType: damasType || null };
+function selectModel(key, damasType, modelName) {
+  selectedModel = { key, damasType: damasType || null, name: modelName };
   
-  // UI active holat
   document.querySelectorAll('.model-chip').forEach(chip => {
     chip.classList.remove('active');
     if (chip.dataset.key === key) {
@@ -404,7 +399,6 @@ function selectModel(key, damasType) {
   
   updatePriceDisplay();
   
-  // Plus tugmasini yashir, Add barni ko'rsat
   const plusBtn = document.getElementById('plusBtn');
   const addBar = document.getElementById('addBar');
   if (plusBtn) plusBtn.style.display = 'none';
@@ -424,16 +418,34 @@ function updatePriceDisplay() {
   priceEl.innerText = newPrice;
 }
 
-// ================= ADD TO CART =================
+// ================= ADD TO CART (TUZATILDI) =================
 function addToCart() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
   const priceText = document.getElementById('priceEl')?.innerText || '';
   let priceNumber = 0;
   
-  // Narxni raqamga o'tkazish
   const match = priceText.match(/(\d[\d\s]*)/);
   if (match) {
     priceNumber = parseInt(match[0].replace(/\s/g, ''));
+  }
+  
+  // MASHINA MARKASI QO'SHILDI
+  let carModel = "";
+  let modelNameDisplay = "";
+  
+  if (selectedModel) {
+    // Model chipdan to'liq nomni olish
+    const activeChip = document.querySelector('.model-chip.active');
+    if (activeChip) {
+      modelNameDisplay = activeChip.innerText;
+      carModel = modelNameDisplay;
+    } else {
+      carModel = selectedModel.name || selectedModel.key;
+      modelNameDisplay = carModel;
+    }
+  } else if (currentCategory?.name) {
+    carModel = currentCategory.name;
+    modelNameDisplay = currentCategory.name;
   }
   
   const newItem = {
@@ -443,20 +455,16 @@ function addToCart() {
     priceText: priceText,
     poster: currentItem.poster,
     count: 1,
-    addedAt: Date.now()
+    addedAt: Date.now(),
+    carModel: carModel,           // MASHINA MARKASI
+    modelName: modelNameDisplay   // KO'RINADIGAN NOM
   };
-  
-  if (selectedModel) {
-    newItem.model = selectedModel.key;
-    newItem.modelName = document.querySelector('.model-chip.active')?.innerText || selectedModel.key;
-  }
   
   cart.push(newItem);
   localStorage.setItem('cart', JSON.stringify(cart));
   
   updateCartBadge();
   
-  // Tugmani animatsiya qilish
   const addBar = document.getElementById('addBar');
   if (addBar) {
     addBar.style.transform = 'scale(0.98)';
@@ -468,6 +476,7 @@ function addToCart() {
   }
 }
 
+// Simple product (Onix/Tracker) uchun
 function addOne() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
   const priceText = document.getElementById('priceEl')?.innerText || '';
@@ -478,6 +487,9 @@ function addOne() {
     priceNumber = parseInt(match[0].replace(/\s/g, ''));
   }
   
+  // KATEGORIYA NOMI MASHINA MARKASI SIFATIDA
+  const carModel = currentCategory?.name || "Avtomobil";
+  
   cart.push({
     id: currentItem.id,
     name: currentItem.name,
@@ -485,13 +497,14 @@ function addOne() {
     priceText: priceText,
     poster: currentItem.poster,
     count: 1,
-    addedAt: Date.now()
+    addedAt: Date.now(),
+    carModel: carModel,
+    modelName: carModel
   });
   
   localStorage.setItem('cart', JSON.stringify(cart));
   updateCartBadge();
   
-  // Vizual feedback
   const btn = document.getElementById('plusBtn');
   if (btn) {
     btn.style.transform = 'scale(0.9)';
@@ -536,10 +549,8 @@ function renderPage() {
     return;
   }
   
-  // Simple product (Onix, Tracker) yoki oddiy to'qima/fantan...
   isSimpleProduct = !currentCategory.baseKey;
   
-  // HTML ni yaratish
   const initialPrice = currentItem.price 
     ? currentItem.price 
     : (currentItem.basePrice ? currentItem.basePrice.toLocaleString('uz-UZ') + " so'm" : "Narx mavjud emas");
@@ -557,22 +568,19 @@ function renderPage() {
       
       <div id="modelSlider" class="model-slider" style="display: ${isSimpleProduct ? 'none' : 'flex'}"></div>
       
-      
     </div>
     
     <div class="desc-card">
       ${currentItem.desc.replace(/\n/g, '<br>')}
     </div>
 
-	<button id="plusBtn" class="plus-btn"
-	  style="display: ${isSimpleProduct ? 'block' : 'none'}">
-	  Savatga qo‘shish
-	</button>
+    <button id="plusBtn" class="plus-btn" style="display: ${isSimpleProduct ? 'block' : 'none'}">
+      Savatga qo‘shish
+    </button>
 
     <div id="addBar" class="add-bar" style="display: none">Savatga qo‘shish</div>
   `;
   
-  // Event larni bog'lash
   if (isSimpleProduct) {
     const plusBtn = document.getElementById('plusBtn');
     if (plusBtn) plusBtn.onclick = addOne;
@@ -585,10 +593,7 @@ function renderPage() {
   updateCartBadge();
 }
 
-// ================= INIT =================
 renderPage();
-
-// LocalStorage o'zgarishini kuzatish
 window.addEventListener('focus', updateCartBadge);
 window.updateCartBadge = updateCartBadge;
 </script>
