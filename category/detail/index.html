@@ -421,20 +421,20 @@ function updatePriceDisplay() {
 // ================= ADD TO CART (TUZATILDI) =================
 function addToCart() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
   const priceText = document.getElementById('priceEl')?.innerText || '';
   let priceNumber = 0;
-  
+
   const match = priceText.match(/(\d[\d\s]*)/);
   if (match) {
     priceNumber = parseInt(match[0].replace(/\s/g, ''));
   }
-  
-  // MASHINA MARKASI QO'SHILDI
+
+  // MODEL ANIQLASH
   let carModel = "";
   let modelNameDisplay = "";
-  
+
   if (selectedModel) {
-    // Model chipdan to'liq nomni olish
     const activeChip = document.querySelector('.model-chip.active');
     if (activeChip) {
       modelNameDisplay = activeChip.innerText;
@@ -447,24 +447,35 @@ function addToCart() {
     carModel = currentCategory.name;
     modelNameDisplay = currentCategory.name;
   }
-  
-  const newItem = {
-    id: currentItem.id,
-    name: currentItem.name,
-    price: priceNumber,
-    priceText: priceText,
-    poster: currentItem.poster,
-    count: 1,
-    addedAt: Date.now(),
-    carModel: carModel,           // MASHINA MARKASI
-    modelName: modelNameDisplay   // KO'RINADIGAN NOM
-  };
-  
-  cart.push(newItem);
+
+  // 🔥 EXISTING ITEM TEKSHIRISH
+  const existingIndex = cart.findIndex(item =>
+    item.id === currentItem.id &&
+    item.modelName === modelNameDisplay
+  );
+
+  if (existingIndex !== -1) {
+    // BOR → count++
+    cart[existingIndex].count += 1;
+  } else {
+    // YO‘Q → yangi qo‘shamiz
+    cart.push({
+      id: currentItem.id,
+      name: currentItem.name,
+      price: priceNumber,
+      priceText: priceText,
+      poster: currentItem.poster,
+      count: 1,
+      addedAt: Date.now(),
+      carModel: carModel,
+      modelName: modelNameDisplay
+    });
+  }
+
   localStorage.setItem('cart', JSON.stringify(cart));
-  
   updateCartBadge();
-  
+
+  // UI feedback
   const addBar = document.getElementById('addBar');
   if (addBar) {
     addBar.style.transform = 'scale(0.98)';
@@ -479,32 +490,45 @@ function addToCart() {
 // Simple product (Onix/Tracker) uchun
 function addOne() {
   const cart = JSON.parse(localStorage.getItem('cart')) || [];
+
   const priceText = document.getElementById('priceEl')?.innerText || '';
   let priceNumber = 0;
-  
+
   const match = priceText.match(/(\d[\d\s]*)/);
   if (match) {
     priceNumber = parseInt(match[0].replace(/\s/g, ''));
   }
-  
-  // KATEGORIYA NOMI MASHINA MARKASI SIFATIDA
+
   const carModel = currentCategory?.name || "Avtomobil";
-  
-  cart.push({
-    id: currentItem.id,
-    name: currentItem.name,
-    price: priceNumber,
-    priceText: priceText,
-    poster: currentItem.poster,
-    count: 1,
-    addedAt: Date.now(),
-    carModel: carModel,
-    modelName: carModel
-  });
-  
+
+  // 🔥 EXISTING ITEM TEKSHIRISH
+  const existingIndex = cart.findIndex(item =>
+    item.id === currentItem.id &&
+    item.modelName === carModel
+  );
+
+  if (existingIndex !== -1) {
+    // BOR → count++
+    cart[existingIndex].count += 1;
+  } else {
+    // YO‘Q → yangi
+    cart.push({
+      id: currentItem.id,
+      name: currentItem.name,
+      price: priceNumber,
+      priceText: priceText,
+      poster: currentItem.poster,
+      count: 1,
+      addedAt: Date.now(),
+      carModel: carModel,
+      modelName: carModel
+    });
+  }
+
   localStorage.setItem('cart', JSON.stringify(cart));
   updateCartBadge();
-  
+
+  // UI animatsiya
   const btn = document.getElementById('plusBtn');
   if (btn) {
     btn.style.transform = 'scale(0.9)';
