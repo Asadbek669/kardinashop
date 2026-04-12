@@ -388,7 +388,9 @@ function renderModels() {
 }
 
 function selectModel(key, damasType, modelName) {
-  selectedModel = { key, damasType: damasType || null, name: modelName };
+  // Labo tanlanganini aniqlash
+  const isLabo = (key === 'labo');
+  selectedModel = { key, damasType: damasType || null, name: modelName, isLabo: isLabo };
   
   document.querySelectorAll('.model-chip').forEach(chip => {
     chip.classList.remove('active');
@@ -399,6 +401,7 @@ function selectModel(key, damasType, modelName) {
   
   updatePriceDisplay();
   
+  // Tugmalarni ko'rsatish
   const plusBtn = document.getElementById('plusBtn');
   const addBar = document.getElementById('addBar');
   if (plusBtn) plusBtn.style.display = 'none';
@@ -414,7 +417,13 @@ function updatePriceDisplay() {
     return;
   }
   
-  const newPrice = getProductPrice(currentItem, currentCategory?.baseKey, selectedModel.damasType);
+  // Yangilangan getPrice chaqiruvi
+  const newPrice = getPrice( // getProductPrice emas, getPrice bo'lishi kerak
+    currentItem, 
+    currentCategory?.baseKey, 
+    selectedModel.damasType, 
+    selectedModel.isLabo 
+  );
   priceEl.innerText = newPrice;
 }
 
