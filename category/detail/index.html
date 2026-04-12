@@ -410,21 +410,48 @@ function selectModel(key, damasType, modelName) {
 
 function updatePriceDisplay() {
   const priceEl = document.getElementById('priceEl');
+  const addBar = document.getElementById('addBar');
   if (!priceEl || !currentItem) return;
+
+  let displayPrice = "";
   
   if (!selectedModel) {
-    priceEl.innerText = formatPriceLocal(currentItem.basePrice);
-    return;
+    displayPrice = formatPriceLocal(currentItem.basePrice);
+  } else {
+    // data.js dagi getPrice funksiyasidan foydalanamiz
+    displayPrice = getPrice(
+      currentItem, 
+      currentCategory?.baseKey, 
+      selectedModel.damasType, 
+      selectedModel.isLabo
+    );
   }
-  
-  // Yangilangan getPrice chaqiruvi
-  const newPrice = getPrice( // getProductPrice emas, getPrice bo'lishi kerak
-    currentItem, 
-    currentCategory?.baseKey, 
-    selectedModel.damasType, 
-    selectedModel.isLabo 
-  );
-  priceEl.innerText = newPrice;
+
+  // Narx 1 so'm ekanligini tekshirish (string yoki number holatida)
+  const isOutOfStock = displayPrice.includes("1") && (displayPrice.length < 12); 
+
+  if (isOutOfStock) { 
+    priceEl.innerText = "Tugadi";
+    priceEl.style.color = "#ff4444";
+    
+    if (addBar) {
+      addBar.innerText = "Sotuvda mavjud emas";
+      addBar.style.background = "#333";
+      addBar.style.color = "#888";
+      addBar.style.pointerEvents = "none";
+    }
+  } else {
+    priceEl.innerText = displayPrice;
+    priceEl.style.color = "";
+    
+    if (addBar) {
+      addBar.innerText = "Savatga qo‘shish";
+      addBar.style.background = "linear-gradient(90deg, #00ff99, #00c2ff)";
+      addBar.style.color = "#000";
+      addBar.style.pointerEvents = "auto";
+      addBar.onclick = addToCart; // Hodisani qayta bog'lash
+    }
+  }
 }
 
 // ================= ADD TO CART (TUZATILDI) =================
@@ -565,12 +592,13 @@ function renderPage() {
   const catId = urlParams.get('cat');
   const itemId = urlParams.get('id');
   
-  if (!catId || !itemId || !categories) {
+  // 1. Ma'lumotlar borligini tekshirish
+  if (!catId || !itemId || !window.categories) {
     document.getElementById('app').innerHTML = '<div class="error-message">❌ Mahsulot topilmadi</div>';
     return;
   }
   
-  currentCategory = categories.find(c => c.id === catId);
+  currentCategory = window.categories.find(c => c.id === catId);
   if (!currentCategory) {
     document.getElementById('app').innerHTML = '<div class="error-message">❌ Kategoriya topilmadi</div>';
     return;
@@ -582,12 +610,14 @@ function renderPage() {
     return;
   }
   
+  // 2. Mahsulot turini aniqlash
   isSimpleProduct = !currentCategory.baseKey;
   
   const initialPrice = currentItem.price 
     ? currentItem.price 
     : (currentItem.basePrice ? currentItem.basePrice.toLocaleString('uz-UZ') + " so'm" : "Narx mavjud emas");
   
+  // 3. HTML strukturani chizish
   document.getElementById('app').innerHTML = `
     <div class="poster-container">
       <img id="posterImg" src="${currentItem.poster}" alt="${currentItem.name}">
@@ -596,11 +626,8 @@ function renderPage() {
     
     <div class="info-panel">
       <h1 class="product-name">${currentItem.name}</h1>
-      
       <div class="price-box" id="priceEl">${initialPrice}</div>
-      
       <div id="modelSlider" class="model-slider" style="display: ${isSimpleProduct ? 'none' : 'flex'}"></div>
-      
     </div>
     
     <div class="desc-card">
@@ -614,13 +641,33 @@ function renderPage() {
     <div id="addBar" class="add-bar" style="display: none">Savatga qo‘shish</div>
   `;
   
+  // 4. Elementlarni JS o'zgaruvchilariga biriktirish
+  const priceEl = document.getElementById('priceEl');
+  const plusBtn = document.getElementById('plusBtn');
+
+  // 5. Murakkab mahsulotlar (Damas, Labo) uchun modellar ro'yxatini chiqarish
+  if (!isSimpleProduct) {
+    renderModels(); // Bu funksiya data.js dan modellarni chizadi
+  }
+
+  // 6. Oddiy mahsulotlar (Onix, Tracker) uchun "Tugadi" tekshiruvi
   if (isSimpleProduct) {
-    const plusBtn = document.getElementById('plusBtn');
-    if (plusBtn) plusBtn.onclick = addOne;
-  } else {
-    renderModels();
-    const addBar = document.getElementById('addBar');
-    if (addBar) addBar.onclick = addToCart;
+    const p = currentItem.price;
+    // Agar narx "1 so'm", "1" yoki sonli 1 bo'lsa
+    if (p === "1 so'm" || p === "1" || p === 1) {
+      if (priceEl) {
+        priceEl.innerText = "Tugadi";
+        priceEl.style.color = "#ff4444";
+      }
+      if (plusBtn) {
+        plusBtn.innerText = "Sotuvda mavjud emas";
+        plusBtn.style.background = "#333";
+        plusBtn.style.color = "#888";
+        plusBtn.style.pointerEvents = "none";
+      }
+    } else {
+      plusBtn.onclick = addOne;
+    }
   }
   
   updateCartBadge();
