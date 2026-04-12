@@ -41,19 +41,19 @@ const BASE_PRICE = {
 ============================== */
 const DAMAS_PRICES = {
   toqima: {
-    komplekt: 1000000,
+    komplekt: 750000,
     qator_2: 700000,
-    qator_1: 700000,
+    qator_1: 1,
   },
   fantan: {
-    komplekt: 380000,
-    qator_2: 320000,
-    qator_1: 200000,
+    komplekt: 400000,
+    qator_2: 360000,
+    qator_1: 320000,
   },
   padushka: {
-    komplekt: 400000,
-    qator_2: 320000,
-    qator_1: 220000,
+    komplekt: 420000,
+    qator_2: 380000,
+    qator_1: 330000,
   },
   shatlanka: {
     komplekt: 600000,
@@ -62,6 +62,15 @@ const DAMAS_PRICES = {
   },
 };
 
+/* ==============================
+   📌 LABO PRICES (YANGI)
+============================== */
+const LABO_PRICES = {
+  toqima: 350000,   // Labo uchun maxsus narx
+  fantan: 200000,   // Labo uchun maxsus narx
+  padushka: 220000, // Labo uchun maxsus narx
+  shatlanka: 300000, // Labo uchun maxsus narx
+};
 /* ==============================
    📌 FORMAT
 ============================== */
@@ -72,24 +81,27 @@ function formatPrice(value) {
 /* ==============================
    📌 PRICE GETTER
 ============================== */
-function getPrice(item, categoryKey, damasType) {
+function getPrice(item, categoryKey, damasType, isLabo = false) {
   // ONIX / TRACKER uchun
   if (item.price) {
     return item.price;
   }
 
-  // oddiy narx
-  if (!damasType) {
-    return formatPrice(item.basePrice);
+  // LABO uchun tekshiruv
+  if (isLabo && LABO_PRICES[categoryKey]) {
+    return formatPrice(LABO_PRICES[categoryKey]);
   }
 
-  const damas = DAMAS_PRICES?.[categoryKey];
-
-  if (!damas) {
-    return formatPrice(item.basePrice);
+  // DAMAS uchun tekshiruv
+  if (damasType) {
+    const damas = DAMAS_PRICES?.[categoryKey];
+    if (damas) {
+      return formatPrice(damas[damasType] || item.basePrice);
+    }
   }
 
-  return formatPrice(damas[damasType] || item.basePrice);
+  // Oddiy holatda bazaviy narx
+  return formatPrice(item.basePrice);
 }
 
 /* ==============================
@@ -329,35 +341,35 @@ const categories = [
     items: [
       {
         id: "track1",
-        name: "Tracker 2",
+        name: "Tracker 2 (Premium)",
         price: "750 000 so'm",
         desc: "Faqat Tracker 2 mashinalari uchun mavjud",
         poster: BASE_IMAGE + "track/1.jpg"
       },
       {
         id: "track2",
-        name: "Tracker 2",
+        name: "Tracker 2 (Standart)",
         price: "680 000 so'm",
         desc: "Faqat Tracker 2 mashinalari uchun mavjud",
         poster: BASE_IMAGE + "track/2.jpg"
       },
       {
         id: "track3",
-        name: "Tracker 2",
+        name: "Tracker 2 (Classic)",
         price: "680 000 so'm",
         desc: "Faqat Tracker 2 mashinalari uchun mavjud",
         poster: BASE_IMAGE + "track/3.jpg"
       },
       {
         id: "track4",
-        name: "Tracker 2",
+        name: "Tracker 2 (Basic)",
         price: "380 000 so'm",
         desc: "Faqat Tracker 2 mashinalari uchun mavjud",
         poster: BASE_IMAGE + "track/4.jpg"
       },
       {
         id: "track5",
-        name: "Tracker 2",
+        name: "Tracker 2 (Comfort)",
         price: "680 000 so'm",
         desc: "Faqat Tracker 2 mashinalari uchun mavjud",
         poster: BASE_IMAGE + "track/5.jpg"
@@ -372,6 +384,7 @@ const categories = [
 ============================== */
 // Bularni global qilish uchun
 if (typeof window !== 'undefined') {
+  window.LABO_PRICES = LABO_PRICES; // Qo'shildi
   window.categories = categories;
   window.DAMAS_PRICES = DAMAS_PRICES;
   window.BASE_PRICE = BASE_PRICE;
